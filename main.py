@@ -12,6 +12,11 @@ sys.stderr = sys.stdout
 # START_KEY = keyboard.KeyCode.from_vk(97)  # Numpad 1
 # STOP_KEY = keyboard.KeyCode.from_vk(98)   # Numpad 2
 
+# --- Настройки шагов ---
+STEP_BOTTOM_BEFORE = 6  # до крестика (рекомендуется 6-8, можно менять)
+STEP_BOTTOM_AFTER = 6   # после крестика
+STEP_TOP = 3            # верх (оставим как было, если нужно - меняй)
+
 # --- Вспомогательные функции ---
 def rnd(a, b):
     return random.randint(a, b)
@@ -123,21 +128,21 @@ def main():
     # wait(1.6)  # Пауза перед сбором сверху
 
     # --- Сбор низ до крестика ---
-    for var in range(150, 1145, 3):
+    for var in range(150, 1145, STEP_BOTTOM_BEFORE):
         if stop_script: return
         for offset in range(0, 7, 2):
             lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 9)
         lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
 
     # --- Сбор низ после крестика ---
-    for var in range(1260, 1825, 3):
+    for var in range(1260, 1825, STEP_BOTTOM_AFTER):
         if stop_script: return
         for offset in range(0, 7, 2):
             lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 9)
         lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
 
     # --- Сбор верх ---
-    for var in range(480, 1410, 3):
+    for var in range(480, 1410, STEP_TOP):
         if stop_script: return
         for offset in range(0, 7, 2):
             lclick(var + offset + rnd(-2, 1), 49 + rnd(-2, 2), 9)
