@@ -98,7 +98,7 @@ def main():
         lclick(var + rnd(-2, 0), 276 + rnd(-3, 1), 36)
 
     lclick(1850, 350)
-    wait(3.2)  # Пауза между посадкой низ и сбором низ
+    wait(3.2)  # Пауза перед сбором снизу
 
     # --- Посадка верх ---
     ldown(580, 132)
@@ -118,7 +118,7 @@ def main():
         lclick(var + rnd(-2, 0), 132 + rnd(-3, 1), 36)
 
     lclick(1850, 350)
-    wait(1.6)  # Пауза между посадкой верх и сбором верх
+    # wait(1.6)  # Пауза перед сбором сверху
 
     # --- Сбор низ до крестика ---
     for var in range(150, 1145, 4):
@@ -138,8 +138,8 @@ def main():
     for var in range(480, 1410, 3):
         if stop_script: return
         for offset in range(0, 7, 2):
-            lclick(var + offset + rnd(-2, 1), 49 + rnd(-2, 2), 10)
-        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 8)
+            lclick(var + offset + rnd(-2, 1), 49 + rnd(-2, 2), 9)
+        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
 
     wait(rnd(-1.2, 1.2))
     script_running = False
