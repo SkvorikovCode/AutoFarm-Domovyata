@@ -117,76 +117,62 @@ listener.start()
 
 # --- Основная логика ---
 def main():
-    global stop_script, script_running
+    global stop_script
     update_tray_status('green')
     # --- Посадка низ ---
     lclick(50, 404)
     waitms(40)
-
     ldown(290, 276)
     wait(0.4)
     lup(290, 276)
     wait(0.4)
-
     move(1142, 612)
     waitms(80)
     ldown(745, 405)
     waitms(80)
     lup(745, 405)
     waitms(160)
-
     for var in range(175, 1850, 2):
         if stop_script: return
         lclick(var + rnd(-2, 0), 276 + rnd(-3, 1), 36)
-
     lclick(1850, 350)
     wait(3.2)  # Пауза перед сбором снизу
-
     wait(8)  # Пауза между посадкой низа и посадкой верха
-
     # --- Посадка верх ---
     ldown(580, 132)
     wait(0.4)
     lup(580, 132)
     wait(0.4)
-
     move(1142, 612)
     waitms(80)
     ldown(745, 405)
     waitms(80)
     lup(745, 405)
     waitms(160)
-
     for var in range(517, 1410, 2):
         if stop_script: return
         lclick(var + rnd(-2, 0), 132 + rnd(-3, 1), 36)
-
     lclick(1850, 350)
     # wait(1.6)  # Пауза перед сбором сверху
-
     # --- Сбор низ до крестика ---
     for var in range(150, 1145, STEP_BOTTOM_BEFORE):
         if stop_script: return
         for offset in range(0, 7, 2):
             lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 9)
         lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
-
     # --- Сбор низ после крестика ---
     for var in range(1260, 1825, STEP_BOTTOM_AFTER):
         if stop_script: return
         for offset in range(0, 7, 2):
             lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 9)
         lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
-
     # --- Сбор верх ---
     for var in range(480, 1410, STEP_TOP):
         if stop_script: return
         for offset in range(0, 7, 2):
             lclick(var + offset + rnd(-2, 1), 49 + rnd(-2, 2), 9)
         lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
-
     wait(rnd(-1.2, 1.2))
-    script_running = False
     update_tray_status('yellow')
 
 def main_loop():
