@@ -118,6 +118,7 @@ listener.start()
 # --- Основная логика ---
 def main():
     global stop_script
+    log("===> Начало main()")
     update_tray_status('green')
     # --- Посадка низ ---
     lclick(50, 404)
@@ -174,12 +175,16 @@ def main():
         lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
     wait(rnd(-1.2, 1.2))
     update_tray_status('yellow')
+    log("<=== Конец main()")
 
 def main_loop():
     global stop_script, script_running
     update_tray_status('yellow')
+    script_running = True
     while not stop_script:
+        log("===> Новый цикл main()")
         main()
+        log("<=== main() завершён, пауза перед следующим циклом")
         if stop_script:
             break
         update_tray_status('yellow')
