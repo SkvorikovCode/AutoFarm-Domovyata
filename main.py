@@ -6,6 +6,7 @@ import threading
 import sys
 import pystray
 from PIL import Image, ImageDraw
+import os
 
 sys.stdout = open('valya_log.txt', 'w', encoding='utf-8')
 sys.stderr = sys.stdout
@@ -74,9 +75,15 @@ def create_icon(color):
     draw.ellipse((8, 8, 56, 56), fill=fill)
     return img
 
+def on_tray_exit(icon, item):
+    log('Выход по меню трея')
+    icon.stop()
+    os._exit(0)
+
 def tray_run():
     global tray_icon, TRAY_STATUS
-    tray_icon = pystray.Icon('valya', create_icon(TRAY_STATUS), 'Valya')
+    menu = pystray.Menu(pystray.MenuItem('Закрыть', on_tray_exit))
+    tray_icon = pystray.Icon('valya', create_icon(TRAY_STATUS), 'Valya', menu)
     tray_icon.run()
 
 def update_tray_status(status):

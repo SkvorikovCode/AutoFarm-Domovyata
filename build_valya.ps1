@@ -10,8 +10,8 @@ pip install -r requirements.txt
 # Установка pyinstaller
 pip install pyinstaller
 
-# Сборка main.py в exe
-pyinstaller --onefile main.py
+# Сборка main.py в exe с иконкой mouse.ico
+pyinstaller --onefile --icon mouse.ico main.py
 
 Write-Host "\nГотово! Файл main.exe находится в папке dist." 
 # --noconsole
