@@ -3,6 +3,10 @@ import time
 import random
 from pynput import keyboard
 import threading
+import sys
+
+sys.stdout = open('valya_log.txt', 'w', encoding='utf-8')
+sys.stderr = sys.stdout
 
 # --- Настройки ---
 START_KEY = keyboard.KeyCode.from_vk(0x4F)  # Numpad 1
@@ -32,6 +36,15 @@ def lup(x, y):
 def move(x, y):
     pyautogui.moveTo(x, y)
 
+def log(*args, **kwargs):
+    print(*args, **kwargs)
+    try:
+        if sys.__stdout__ is not None:
+            sys.__stdout__.write(' '.join(str(a) for a in args) + '\n')
+            sys.__stdout__.flush()
+    except Exception:
+        pass
+
 # --- Глобальные переменные ---
 stop_script = False
 script_running = False
@@ -40,16 +53,20 @@ script_thread = None
 # --- Остановка и запуск ---
 def on_press(key):
     global stop_script, script_running, script_thread
-    if key == START_KEY and not script_running:
-        print("Скрипт запущен (Numpad 1)")
-        stop_script = False
-        script_running = True
-        script_thread = threading.Thread(target=main)
-        script_thread.start()
-    elif key == STOP_KEY and script_running:
-        print("Скрипт остановлен (Numpad 2)")
-        stop_script = True
-        script_running = False
+    log(f"Нажата клавиша: {key}")
+    try:
+        if (key == START_KEY or (hasattr(key, 'char') and key.char == '1')) and not script_running:
+            log("Скрипт запущен (Numpad 1 или '1')")
+            stop_script = False
+            script_running = True
+            script_thread = threading.Thread(target=main)
+            script_thread.start()
+        elif (key == STOP_KEY or (hasattr(key, 'char') and key.char == '2')) and script_running:
+            log("Скрипт остановлен (Numpad 2 или '2')")
+            stop_script = True
+            script_running = False
+    except AttributeError:
+        pass
 
 listener = keyboard.Listener(on_press=on_press)
 listener.start()
@@ -125,6 +142,6 @@ def main():
     script_running = False
 
 if __name__ == "__main__":
-    print("Для запуска нажмите Numpad 1, для остановки — Numpad 2.")
+    log("Для запуска нажмите Numpad 1, для остановки — Numpad 2.")
     while True:
         time.sleep(0.1)
