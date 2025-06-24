@@ -2,9 +2,11 @@ import pyautogui
 import time
 import random
 from pynput import keyboard
+import threading
 
 # --- Настройки ---
-STOP_KEY = keyboard.Key.esc  # Клавиша для остановки скрипта
+START_KEY = keyboard.KeyCode.from_vk(0x4F)  # Numpad 1
+STOP_KEY = keyboard.KeyCode.from_vk(0x50)   # Numpad 2
 
 # --- Вспомогательные функции ---
 def rnd(a, b):
@@ -30,22 +32,31 @@ def lup(x, y):
 def move(x, y):
     pyautogui.moveTo(x, y)
 
-# --- Остановка по ESC ---
+# --- Глобальные переменные ---
 stop_script = False
+script_running = False
+script_thread = None
+
+# --- Остановка и запуск ---
 def on_press(key):
-    global stop_script
-    if key == STOP_KEY:
+    global stop_script, script_running, script_thread
+    if key == START_KEY and not script_running:
+        print("Скрипт запущен (Numpad 1)")
+        stop_script = False
+        script_running = True
+        script_thread = threading.Thread(target=main)
+        script_thread.start()
+    elif key == STOP_KEY and script_running:
+        print("Скрипт остановлен (Numpad 2)")
         stop_script = True
-        print("Скрипт остановлен пользователем.")
+        script_running = False
 
 listener = keyboard.Listener(on_press=on_press)
 listener.start()
 
 # --- Основная логика ---
-
 def main():
-    global stop_script
-
+    global stop_script, script_running
     # --- Посадка низ ---
     lclick(50, 404)
     waitms(100)
@@ -111,8 +122,9 @@ def main():
         lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 33)
 
     wait(rnd(-3, 3))
+    script_running = False
 
 if __name__ == "__main__":
-    print("Запуск скрипта. Для остановки нажмите ESC.")
-    main()
-    print("Скрипт завершён.")
+    print("Для запуска нажмите Numpad 1, для остановки — Numpad 2.")
+    while True:
+        time.sleep(0.1)
