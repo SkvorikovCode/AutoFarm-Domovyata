@@ -121,18 +121,18 @@ def main():
     # wait(1.6)  # Пауза перед сбором сверху
 
     # --- Сбор низ до крестика ---
-    for var in range(150, 1145, 4):
+    for var in range(150, 1145, 3):
         if stop_script: return
         for offset in range(0, 7, 2):
-            lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 26)
-        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 18)
+            lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 9)
+        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
 
     # --- Сбор низ после крестика ---
-    for var in range(1260, 1825, 4):
+    for var in range(1260, 1825, 3):
         if stop_script: return
         for offset in range(0, 7, 2):
-            lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 26)
-        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 18)
+            lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 9)
+        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
 
     # --- Сбор верх ---
     for var in range(480, 1410, 3):
