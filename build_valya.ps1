@@ -1,4 +1,4 @@
-# Установка pip (если не установлен)
+﻿# Установка pip (если не установлен)
 if (-not (Get-Command pip -ErrorAction SilentlyContinue)) {
     Write-Host "pip не найден, пробую установить..."
     python -m ensurepip --upgrade
