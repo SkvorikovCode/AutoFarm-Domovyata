@@ -8,9 +8,6 @@ import pystray
 from PIL import Image, ImageDraw
 import os
 
-sys.stdout = open('valya_log.txt', 'w', encoding='utf-8')
-sys.stderr = sys.stdout
-
 # --- Настройки ---
 # START_KEY = keyboard.KeyCode.from_vk(97)  # Numpad 1
 # STOP_KEY = keyboard.KeyCode.from_vk(98)   # Numpad 2
@@ -44,14 +41,12 @@ def lup(x, y):
 def move(x, y):
     pyautogui.moveTo(x, y)
 
+LOG_FILE = 'logs.txt'
+
 def log(*args, **kwargs):
-    print(*args, **kwargs)
-    try:
-        if sys.__stdout__ is not None:
-            sys.__stdout__.write(' '.join(str(a) for a in args) + '\n')
-            sys.__stdout__.flush()
-    except Exception:
-        pass
+    with open(LOG_FILE, 'a', encoding='utf-8') as f:
+        f.write(' '.join(str(a) for a in args) + '\n')
+        f.flush()
 
 # --- Глобальные переменные ---
 stop_script = False
@@ -145,6 +140,7 @@ def main():
         lclick(var + rnd(-2, 0), 276 + rnd(-3, 1), 36)
     lclick(1850, 350)
     wait(3.2)  # Пауза перед сбором снизу
+    log("[main] Посадка низ завершена")
     wait(8)  # Пауза между посадкой низа и посадкой верха
     # --- Посадка верх ---
     ldown(580, 132)
@@ -161,25 +157,28 @@ def main():
         if stop_script: return
         lclick(var + rnd(-2, 0), 132 + rnd(-3, 1), 36)
     lclick(1850, 350)
-    # wait(1.6)  # Пауза перед сбором сверху
+    log("[main] Посадка верх завершена")
     # --- Сбор низ до крестика ---
     for var in range(150, 1145, STEP_BOTTOM_BEFORE):
         if stop_script: return
         for offset in range(0, 7, 2):
             lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 9)
         lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
+    log("[main] Сбор низ до крестика завершён")
     # --- Сбор низ после крестика ---
     for var in range(1260, 1825, STEP_BOTTOM_AFTER):
         if stop_script: return
         for offset in range(0, 7, 2):
             lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 9)
         lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
+    log("[main] Сбор низ после крестика завершён")
     # --- Сбор верх ---
     for var in range(480, 1410, STEP_TOP):
         if stop_script: return
         for offset in range(0, 7, 2):
             lclick(var + offset + rnd(-2, 1), 49 + rnd(-2, 2), 9)
         lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
+    log("[main] Сбор верх завершён")
     wait(rnd(-1.2, 1.2))
     update_tray_status('yellow')
     log("<=== Конец main()")
@@ -190,7 +189,10 @@ def main_loop():
     script_running = True
     while not stop_script:
         log("===> Новый цикл main()")
-        main()
+        try:
+            main()
+        except Exception as e:
+            log(f"ОШИБКА В main(): {e}")
         log("<=== main() завершён, пауза перед следующим циклом")
         if stop_script:
             break
