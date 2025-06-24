@@ -67,7 +67,7 @@ def on_press(key):
             log("Скрипт запущен (Numpad 1 или '1')")
             stop_script = False
             script_running = True
-            script_thread = threading.Thread(target=main)
+            script_thread = threading.Thread(target=main_loop)
             script_thread.start()
         elif (vk_code == 98 or char == '2') and script_running:
             log("Скрипт остановлен (Numpad 2 или '2')")
@@ -149,6 +149,20 @@ def main():
         lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
 
     wait(rnd(-1.2, 1.2))
+    script_running = False
+
+def main_loop():
+    global stop_script, script_running
+    while not stop_script:
+        main()
+        if stop_script:
+            break
+        log('Пауза 30 секунд перед следующим циклом...')
+        for i in range(30, 0, -1):
+            if stop_script:
+                break
+            log(f'До следующего запуска: {i} сек.')
+            time.sleep(1)
     script_running = False
 
 if __name__ == "__main__":
