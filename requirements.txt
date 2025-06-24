@@ -1,2 +1,4 @@
 pyautogui
-pynput 
+pynput
+pystray
+pillow 
