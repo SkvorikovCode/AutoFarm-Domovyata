@@ -9,8 +9,8 @@ sys.stdout = open('valya_log.txt', 'w', encoding='utf-8')
 sys.stderr = sys.stdout
 
 # --- Настройки ---
-START_KEY = keyboard.KeyCode.from_vk(97)  # Numpad 1
-STOP_KEY = keyboard.KeyCode.from_vk(98)   # Numpad 2
+# START_KEY = keyboard.KeyCode.from_vk(97)  # Numpad 1
+# STOP_KEY = keyboard.KeyCode.from_vk(98)   # Numpad 2
 
 # --- Вспомогательные функции ---
 def rnd(a, b):
@@ -53,20 +53,23 @@ script_thread = None
 # --- Остановка и запуск ---
 def on_press(key):
     global stop_script, script_running, script_thread
-    log(f"Нажата клавиша: {key}")
+    log(f"Нажата клавиша: {key}, vk: {getattr(key, 'vk', 'N/A')}")
     try:
-        if (key == START_KEY or (hasattr(key, 'char') and key.char == '1')) and not script_running:
+        vk_code = getattr(key, 'vk', None)
+        char = getattr(key, 'char', None)
+
+        if (vk_code == 97 or char == '1') and not script_running:
             log("Скрипт запущен (Numpad 1 или '1')")
             stop_script = False
             script_running = True
             script_thread = threading.Thread(target=main)
             script_thread.start()
-        elif (key == STOP_KEY or (hasattr(key, 'char') and key.char == '2')) and script_running:
+        elif (vk_code == 98 or char == '2') and script_running:
             log("Скрипт остановлен (Numpad 2 или '2')")
             stop_script = True
             script_running = False
-    except AttributeError:
-        pass
+    except Exception as e:
+        log(f"Ошибка в on_press: {e}")
 
 listener = keyboard.Listener(on_press=on_press)
 listener.start()
