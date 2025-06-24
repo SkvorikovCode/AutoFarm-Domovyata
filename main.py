@@ -186,7 +186,7 @@ def main():
             lclick(var + offset + rnd(-2, 1), 49 + rnd(-2, 2), 9)
         lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
     log("[main] Сбор верх завершён")
-    wait(rnd(-1.2, 1.2))
+    wait(random.uniform(-1.2, 1.2))
     update_tray_status('yellow')
     log("<=== Конец main()")
 
