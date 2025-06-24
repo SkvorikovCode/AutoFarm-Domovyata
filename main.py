@@ -100,7 +100,7 @@ def on_press(key):
     name = getattr(key, 'name', None)
     log(f"Нажата клавиша: {key}, vk: {vk_code}, char: {char}, name: {name}")
 
-    # Проверяем все возможные варианты для Num1/Num2 и обычных 1/2
+    # Проверяем все возможные варианты для Num1/Num2/Num3 и обычных 1/2/3
     if (vk_code == 97 or char == '1' or name == 'num1') and not script_running:
         log("Скрипт запущен (Numpad 1, '1', или 'num1')")
         stop_script = False
@@ -113,6 +113,13 @@ def on_press(key):
         stop_script = True
         script_running = False
         update_tray_status('red')
+    elif (vk_code == 99 or char == '3' or name == 'num3') and not script_running:
+        log("Скрипт запущен только сбор (Numpad 3, '3', или 'num3')")
+        stop_script = False
+        script_running = True
+        update_tray_status('green')
+        script_thread = threading.Thread(target=collect_rows_loop)
+        script_thread.start()
 
 listener = keyboard.Listener(on_press=on_press)
 listener.start()
@@ -194,6 +201,58 @@ def main_loop():
         except Exception as e:
             log(f"ОШИБКА В main(): {e}")
         log("<=== main() завершён, пауза перед следующим циклом")
+        if stop_script:
+            break
+        update_tray_status('yellow')
+        log('Пауза 30 секунд перед следующим циклом...')
+        for i in range(30, 0, -1):
+            if stop_script:
+                break
+            log(f'До следующего запуска: {i} сек.')
+            time.sleep(1)
+    script_running = False
+    update_tray_status('red')
+
+def collect_rows_only():
+    global stop_script
+    log("===> Начало collect_rows_only() (только сбор)")
+    update_tray_status('green')
+    # --- Сбор низ до крестика ---
+    for var in range(150, 1145, STEP_BOTTOM_BEFORE):
+        if stop_script: return
+        for offset in range(0, 7, 2):
+            lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 9)
+        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
+    log("[collect_rows_only] Сбор низ до крестика завершён")
+    # --- Сбор низ после крестика ---
+    for var in range(1260, 1825, STEP_BOTTOM_AFTER):
+        if stop_script: return
+        for offset in range(0, 7, 2):
+            lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 9)
+        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
+    log("[collect_rows_only] Сбор низ после крестика завершён")
+    # --- Сбор верх ---
+    for var in range(480, 1410, STEP_TOP):
+        if stop_script: return
+        for offset in range(0, 7, 2):
+            lclick(var + offset + rnd(-2, 1), 49 + rnd(-2, 2), 9)
+        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
+    log("[collect_rows_only] Сбор верх завершён")
+    wait(rnd(-1.2, 1.2))
+    update_tray_status('yellow')
+    log("<=== Конец collect_rows_only() (только сбор)")
+
+def collect_rows_loop():
+    global stop_script, script_running
+    update_tray_status('yellow')
+    script_running = True
+    while not stop_script:
+        log("===> Новый цикл collect_rows_only()")
+        try:
+            collect_rows_only()
+        except Exception as e:
+            log(f"ОШИБКА В collect_rows_only(): {e}")
+        log("<=== collect_rows_only() завершён, пауза перед следующим циклом")
         if stop_script:
             break
         update_tray_status('yellow')
