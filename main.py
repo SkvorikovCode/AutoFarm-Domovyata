@@ -190,8 +190,25 @@ def main():
     update_tray_status('yellow')
     log("<=== Конец main()")
 
+def create_icon_with_number(number):
+    # Создаём иконку с цифрой (обратный отсчёт)
+    img = Image.new('RGBA', (64, 64), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(img)
+    # Жёлтый круг
+    draw.ellipse((8, 8, 56, 56), fill=(255, 200, 0, 255))
+    # Цифра
+    from PIL import ImageFont
+    try:
+        font = ImageFont.truetype("arial.ttf", 36)
+    except:
+        font = ImageFont.load_default()
+    text = str(number)
+    w, h = draw.textsize(text, font=font)
+    draw.text(((64-w)//2, (64-h)//2), text, font=font, fill=(0,0,0,255))
+    return img
+
 def main_loop():
-    global stop_script, script_running
+    global stop_script, script_running, tray_icon
     update_tray_status('yellow')
     script_running = True
     while not stop_script:
@@ -208,8 +225,12 @@ def main_loop():
         for i in range(30, 0, -1):
             if stop_script:
                 break
+            if tray_icon:
+                tray_icon.icon = create_icon_with_number(i)
+                tray_icon.visible = True
             log(f'До следующего запуска: {i} сек.')
             time.sleep(1)
+        update_tray_status('yellow')
     script_running = False
     update_tray_status('red')
 
@@ -243,7 +264,7 @@ def collect_rows_only():
     log("<=== Конец collect_rows_only() (только сбор)")
 
 def collect_rows_loop():
-    global stop_script, script_running
+    global stop_script, script_running, tray_icon
     update_tray_status('yellow')
     script_running = True
     while not stop_script:
@@ -260,8 +281,12 @@ def collect_rows_loop():
         for i in range(30, 0, -1):
             if stop_script:
                 break
+            if tray_icon:
+                tray_icon.icon = create_icon_with_number(i)
+                tray_icon.visible = True
             log(f'До следующего запуска: {i} сек.')
             time.sleep(1)
+        update_tray_status('yellow')
     script_running = False
     update_tray_status('red')
 
