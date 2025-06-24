@@ -9,8 +9,8 @@ sys.stdout = open('valya_log.txt', 'w', encoding='utf-8')
 sys.stderr = sys.stdout
 
 # --- Настройки ---
-START_KEY = keyboard.KeyCode.from_vk(0x4F)  # Numpad 1
-STOP_KEY = keyboard.KeyCode.from_vk(0x50)   # Numpad 2
+START_KEY = keyboard.KeyCode.from_vk(97)  # Numpad 1
+STOP_KEY = keyboard.KeyCode.from_vk(98)   # Numpad 2
 
 # --- Вспомогательные функции ---
 def rnd(a, b):
