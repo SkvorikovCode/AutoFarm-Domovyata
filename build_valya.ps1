@@ -11,6 +11,6 @@ pip install -r requirements.txt
 pip install pyinstaller
 
 # Сборка main.py в exe
-pyinstaller --onefile --noconsole main.py
+pyinstaller --onefile main.py
 
 Write-Host "\nГотово! Файл main.exe находится в папке dist." 
