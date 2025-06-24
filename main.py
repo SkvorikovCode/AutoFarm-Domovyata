@@ -138,8 +138,8 @@ def main():
     for var in range(480, 1410, 3):
         if stop_script: return
         for offset in range(0, 7, 2):
-            lclick(var + offset + rnd(-2, 1), 49 + rnd(-2, 2), 16)
-        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 13)
+            lclick(var + offset + rnd(-2, 1), 49 + rnd(-2, 2), 10)
+        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 8)
 
     wait(rnd(-1.2, 1.2))
     script_running = False
