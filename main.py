@@ -7,6 +7,7 @@ import sys
 import pystray
 from PIL import Image, ImageDraw
 import os
+import speedtest
 
 # --- Настройки ---
 # START_KEY = keyboard.KeyCode.from_vk(97)  # Numpad 1
@@ -267,7 +268,34 @@ def collect_rows_loop():
     script_running = False
     update_tray_status('red')
 
+def check_internet_speed_and_alert():
+    try:
+        st = speedtest.Speedtest()
+        st.get_best_server()
+        download = st.download() / 1_000_000  # Мбит/с
+        upload = st.upload() / 1_000_000      # Мбит/с
+        ping = st.results.ping
+        log(f"Скорость загрузки: {download:.2f} Мбит/с, отдачи: {upload:.2f} Мбит/с, пинг: {ping:.2f} мс")
+        # Пороговые значения (можно скорректировать)
+        min_download = 60  # Мбит/с
+        min_upload = 20    # Мбит/с
+        max_ping = 100     # мс
+        if download < min_download or upload < min_upload or ping > max_ping:
+            msg = (f"ВНИМАНИЕ! Плохое интернет-соединение:\n"
+                   f"Скорость загрузки: {download:.2f} Мбит/с\n"
+                   f"Скорость отдачи: {upload:.2f} Мбит/с\n"
+                   f"Пинг: {ping:.2f} мс\n"
+                   f"Рекомендуется проверить подключение!")
+            log(msg)
+            try:
+                pyautogui.alert(text=msg, title='Плохое интернет-соединение', button='OK')
+            except Exception as e:
+                log(f"Ошибка показа алерта: {e}")
+    except Exception as e:
+        log(f"Ошибка проверки скорости интернета: {e}")
+
 if __name__ == "__main__":
+    check_internet_speed_and_alert()
     log("Для запуска нажмите Numpad 1, для остановки — Numpad 2.")
     while True:
         time.sleep(0.1)
