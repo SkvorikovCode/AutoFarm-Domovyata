@@ -101,21 +101,21 @@ def on_press(key):
     name = getattr(key, 'name', None)
     log(f"Нажата клавиша: {key}, vk: {vk_code}, char: {char}, name: {name}")
 
-    # Проверяем все возможные варианты для Num1/Num2/Num3 и обычных 1/2/3
-    if (vk_code == 97 or char == '1' or name == 'num1') and not script_running:
-        log("Скрипт запущен (Numpad 1, '1', или 'num1')")
+    # Проверяем только Numpad клавиши 1/2/3
+    if (vk_code == 97 or name == 'num1') and not script_running:
+        log("Скрипт запущен (Numpad 1)")
         stop_script = False
         script_running = True
         update_tray_status('green')
         script_thread = threading.Thread(target=main_loop)
         script_thread.start()
-    elif (vk_code == 98 or char == '2' or name == 'num2') and script_running:
-        log("Скрипт остановлен (Numpad 2, '2', или 'num2')")
+    elif (vk_code == 98 or name == 'num2') and script_running:
+        log("Скрипт остановлен (Numpad 2)")
         stop_script = True
         script_running = False
         update_tray_status('red')
-    elif (vk_code == 99 or char == '3' or name == 'num3') and not script_running:
-        log("Скрипт запущен только сбор (Numpad 3, '3', или 'num3')")
+    elif (vk_code == 99 or name == 'num3') and not script_running:
+        log("Скрипт запущен только сбор (Numpad 3)")
         stop_script = False
         script_running = True
         update_tray_status('green')
@@ -138,6 +138,7 @@ def main():
     lup(290, 276)
     wait(0.4)
     move(1142, 612)
+    wait(1.5)  # Увеличенная задержка перед выбором растения
     waitms(80)
     ldown(745, 405)
     waitms(80)
@@ -156,6 +157,7 @@ def main():
     lup(580, 132)
     wait(0.4)
     move(1142, 612)
+    wait(1.5)  # Увеличенная задержка перед выбором растения
     waitms(80)
     ldown(745, 405)
     waitms(80)
@@ -296,6 +298,6 @@ def check_internet_speed_and_alert():
 
 if __name__ == "__main__":
     check_internet_speed_and_alert()
-    log("Для запуска нажмите Numpad 1, для остановки — Numpad 2.")
+    log("Для запуска нажмите Numpad 1, для остановки — Numpad 2, для запуска только сбора — Numpad 3.")
     while True:
         time.sleep(0.1)
