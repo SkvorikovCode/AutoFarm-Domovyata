@@ -18,6 +18,9 @@ STEP_BOTTOM_BEFORE = 6  # до крестика (рекомендуется 6-8,
 STEP_BOTTOM_AFTER = 6   # после крестика
 STEP_TOP = 3            # верх (оставим как было, если нужно - меняй)
 
+# --- Настройки циклов ---
+CACHE_CLEAN_INTERVAL = 3  # Очистка кеша каждые N циклов
+
 # --- Вспомогательные функции ---
 def rnd(a, b):
     return random.randint(a, b)
@@ -53,6 +56,7 @@ def log(*args, **kwargs):
 stop_script = False
 script_running = False
 script_thread = None
+cycle_counter = 0  # Счетчик циклов для очистки кеша
 
 TRAY_STATUS = 'red'  # red (остановлен), green (работает), yellow (пауза)
 tray_icon = None
@@ -93,6 +97,63 @@ def update_tray_status(status):
 tray_thread = threading.Thread(target=tray_run, daemon=True)
 tray_thread.start()
 
+# --- Функция очистки кеша игры ---
+def clean_game_cache():
+    log("===> Начало очистки кеша игры")
+    update_tray_status('yellow')
+    try:
+        # КООРДИНАТЫ ДЛЯ ЗАПОЛНЕНИЯ - ОЧИСТКА КЕША
+        # Примерный алгоритм:
+        # 1. Клик по настройкам/меню
+        lclick(0, 0)  # ЗАМЕНИТЬ! КООРДИНАТЫ КНОПКИ НАСТРОЕК/МЕНЮ
+        wait(1)
+        
+        # 2. Клик по пункту очистки кеша или перезагрузки
+        lclick(0, 0)  # ЗАМЕНИТЬ! КООРДИНАТЫ ПУНКТА ОЧИСТКИ КЕША
+        wait(2)
+        
+        # 3. Подтверждение (если требуется)
+        lclick(0, 0)  # ЗАМЕНИТЬ! КООРДИНАТЫ КНОПКИ ПОДТВЕРЖДЕНИЯ
+        wait(5)  # Подождать завершения очистки
+        
+        log("Кеш игры очищен")
+    except Exception as e:
+        log(f"ОШИБКА ПРИ ОЧИСТКЕ КЕША: {e}")
+    update_tray_status('green')
+    log("<=== Завершение очистки кеша игры")
+
+# --- Функция очистки сухостоя ---
+def clean_withered_plants():
+    log("===> Начало очистки сухостоя")
+    update_tray_status('yellow')
+    try:
+        # КООРДИНАТЫ ДЛЯ ЗАПОЛНЕНИЯ - ОЧИСТКА СУХОСТОЯ
+        # Примерный алгоритм:
+        
+        # 1. Выбор инструмента для удаления сухостоя (если требуется)
+        lclick(0, 0)  # ЗАМЕНИТЬ! КООРДИНАТЫ КНОПКИ/ИНСТРУМЕНТА ДЛЯ УДАЛЕНИЯ
+        wait(1)
+        
+        # 2. Очистка сухостоя на нижней грядке
+        log("Очистка сухостоя на нижней грядке")
+        for var in range(150, 1825, 10):  # Шаг можно скорректировать
+            if stop_script: return
+            lclick(var, 278)  # На 2 пикселя ниже обычных растений (было 276)
+            waitms(50)
+        
+        # 3. Очистка сухостоя на верхней грядке
+        log("Очистка сухостоя на верхней грядке")
+        for var in range(480, 1410, 10):  # Шаг можно скорректировать
+            if stop_script: return
+            lclick(var, 134)  # На 2 пикселя ниже обычных растений (было 132)
+            waitms(50)
+        
+        log("Сухостой очищен")
+    except Exception as e:
+        log(f"ОШИБКА ПРИ ОЧИСТКЕ СУХОСТОЯ: {e}")
+    update_tray_status('green')
+    log("<=== Завершение очистки сухостоя")
+
 # --- Остановка и запуск ---
 def on_press(key):
     global stop_script, script_running, script_thread
@@ -121,9 +182,34 @@ def on_press(key):
         update_tray_status('green')
         script_thread = threading.Thread(target=collect_rows_loop)
         script_thread.start()
+    elif (vk_code == 100 or name == 'num4') and not script_running:
+        log("Запущена очистка кеша и сухостоя (Numpad 4)")
+        stop_script = False
+        script_running = True
+        update_tray_status('green')
+        script_thread = threading.Thread(target=clean_maintenance)
+        script_thread.start()
 
 listener = keyboard.Listener(on_press=on_press)
 listener.start()
+
+# --- Функция обслуживания (очистка кеша + очистка сухостоя) ---
+def clean_maintenance():
+    global stop_script, script_running
+    try:
+        log("===> Начало обслуживания (очистка кеша + сухостоя)")
+        update_tray_status('yellow')
+        clean_game_cache()
+        if stop_script:
+            script_running = False
+            update_tray_status('red')
+            return
+        clean_withered_plants()
+        log("<=== Обслуживание завершено")
+    except Exception as e:
+        log(f"ОШИБКА В ОБСЛУЖИВАНИИ: {e}")
+    script_running = False
+    update_tray_status('red')
 
 # --- Основная логика ---
 def main():
@@ -194,15 +280,29 @@ def main():
     log("<=== Конец main()")
 
 def main_loop():
-    global stop_script, script_running, tray_icon
+    global stop_script, script_running, tray_icon, cycle_counter
     update_tray_status('yellow')
     script_running = True
     while not stop_script:
         log("===> Новый цикл main()")
+        cycle_counter += 1
+        log(f"Текущий цикл: {cycle_counter}")
+        
         try:
             main()
         except Exception as e:
             log(f"ОШИБКА В main(): {e}")
+            
+        # Проверка на необходимость очистки кеша
+        if cycle_counter % CACHE_CLEAN_INTERVAL == 0:
+            log(f"Достигнут {cycle_counter}-й цикл, выполняем очистку кеша и сухостоя")
+            clean_game_cache()
+            if stop_script:
+                break
+            clean_withered_plants()
+            if stop_script:
+                break
+            
         log("<=== main() завершён, пауза перед следующим циклом")
         if stop_script:
             break
@@ -247,15 +347,29 @@ def collect_rows_only():
     log("<=== Конец collect_rows_only() (только сбор)")
 
 def collect_rows_loop():
-    global stop_script, script_running, tray_icon
+    global stop_script, script_running, tray_icon, cycle_counter
     update_tray_status('yellow')
     script_running = True
     while not stop_script:
         log("===> Новый цикл collect_rows_only()")
+        cycle_counter += 1
+        log(f"Текущий цикл: {cycle_counter}")
+        
         try:
             collect_rows_only()
         except Exception as e:
             log(f"ОШИБКА В collect_rows_only(): {e}")
+            
+        # Проверка на необходимость очистки кеша
+        if cycle_counter % CACHE_CLEAN_INTERVAL == 0:
+            log(f"Достигнут {cycle_counter}-й цикл, выполняем очистку кеша и сухостоя")
+            clean_game_cache()
+            if stop_script:
+                break
+            clean_withered_plants()
+            if stop_script:
+                break
+            
         log("<=== collect_rows_only() завершён, пауза перед следующим циклом")
         if stop_script:
             break
@@ -298,6 +412,6 @@ def check_internet_speed_and_alert():
 
 if __name__ == "__main__":
     check_internet_speed_and_alert()
-    log("Для запуска нажмите Numpad 1, для остановки — Numpad 2, для запуска только сбора — Numpad 3.")
+    log("Для запуска нажмите Numpad 1, для остановки — Numpad 2, для запуска только сбора — Numpad 3, для очистки кеша и сухостоя — Numpad 4.")
     while True:
         time.sleep(0.1)
