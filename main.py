@@ -59,6 +59,13 @@ try:
 except ImportError:
     ToastNotifier = None
 
+# Импортируем colorama для поддержки ANSI-цветов в Windows
+try:
+    import colorama
+    colorama.init()
+except ImportError:
+    colorama = None
+
 # --- Настройки ---
 # START_KEY = keyboard.KeyCode.from_vk(97)  # Numpad 1
 # STOP_KEY = keyboard.KeyCode.from_vk(98)   # Numpad 2
