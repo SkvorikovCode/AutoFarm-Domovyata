@@ -42,3 +42,4 @@ jobs:
           files: dist/main_console.exe
           generate_release_notes: true
           token: ${{ secrets.PAT_TOKEN }}
+          body_path: release.md
