@@ -384,7 +384,8 @@ def main():
         var += step - STEP_BOTTOM  # увеличиваем var дополнительно, если шаг увеличен
         # --- Дополнительный сбор лютиков по шаблону каждые 10 сек ---
         if time.time() - last_lutic_check > 10:
-            screenshot_and_click_template(templates_dir="templates", threshold=0.85, template_name="lutic.png")
+            for lutic_template in ["lutic.png", "lutic2.png"]:
+                screenshot_and_click_template(templates_dir="templates", threshold=0.85, template_name=lutic_template)
             last_lutic_check = time.time()
         # --- Поиск и клик по крестику через шаблон каждые 5 сек ---
         if time.time() - last_close_check > 5:
@@ -402,7 +403,8 @@ def main():
         # lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)  # УБРАНО: клик по крестику
         # --- Дополнительный сбор лютиков по шаблону каждые 10 сек ---
         if time.time() - last_lutic_check > 10:
-            screenshot_and_click_template(templates_dir="templates", threshold=0.85, template_name="lutic.png")
+            for lutic_template in ["lutic.png", "lutic2.png"]:
+                screenshot_and_click_template(templates_dir="templates", threshold=0.85, template_name=lutic_template)
             last_lutic_check = time.time()
         # --- Поиск и клик по крестику через шаблон каждые 5 сек ---
         if time.time() - last_close_check > 5:
