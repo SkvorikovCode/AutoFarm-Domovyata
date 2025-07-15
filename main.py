@@ -367,7 +367,7 @@ def main():
         lclick(var + rnd(-2, 0), 132 + rnd(-3, 1), 36)
     lclick(1850, 350)
     log("[main] Посадка верх завершена")
-    wait(3)  # Пауза перед сбором низа
+    wait(5)  # Пауза перед сбором низа
     # --- Сбор низ (единый проход, включая крестик) ---
     last_lutic_check = time.time()
     last_close_check = time.time()
