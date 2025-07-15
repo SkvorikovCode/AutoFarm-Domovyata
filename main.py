@@ -1,13 +1,63 @@
-import pyautogui
+# --- Требуемые библиотеки ---
+# pip install pyautogui pynput pystray pillow speedtest-cli win10toast
+# Если что-то не установлено — скрипт выведет предупреждение в лог
+
 import time
 import random
-from pynput import keyboard
 import threading
 import sys
-import pystray
-from PIL import Image, ImageDraw
 import os
-import speedtest
+
+# Импортируем pyautogui
+try:
+    import pyautogui
+except ImportError:
+    pyautogui = None
+    print('pyautogui не установлен!')
+
+# Импортируем pynput
+try:
+    from pynput import keyboard
+except ImportError:
+    keyboard = None
+    print('pynput не установлен!')
+
+# Импортируем pystray
+try:
+    import pystray
+except ImportError:
+    pystray = None
+    print('pystray не установлен!')
+
+# Импортируем Pillow
+try:
+    from PIL import Image, ImageDraw
+except ImportError:
+    Image = None
+    ImageDraw = None
+    print('Pillow (PIL) не установлен!')
+
+# Импортируем speedtest
+try:
+    import speedtest
+except ImportError:
+    speedtest = None
+    print('speedtest-cli не установлен!')
+
+# Импорт для tkinter alert
+try:
+    import tkinter as tk
+    from tkinter import messagebox
+except ImportError:
+    tk = None
+    messagebox = None
+    print('tkinter не установлен!')
+
+# Импортируем win10toast для уведомлений (только Windows)
+try:
+    from win10toast import ToastNotifier
+except ImportError:
+    ToastNotifier = None
 
 # --- Настройки ---
 # START_KEY = keyboard.KeyCode.from_vk(97)  # Numpad 1
@@ -31,19 +81,55 @@ def waitms(ms):
 def wait(s):
     time.sleep(s)
 
+# --- Для контроля мыши ---
+last_target_pos = [None, None]  # Последняя целевая позиция (x, y)
+user_moved_mouse = False
+
+def notify_user(title, msg):
+    # Уведомление в консоль
+    print(f"\033[91m[УВЕДОМЛЕНИЕ]\033[0m {title}: {msg}")
+    # Уведомление в Windows
+    if ToastNotifier is not None:
+        try:
+            toaster = ToastNotifier()
+            toaster.show_toast(title, msg, duration=5, threaded=True)
+        except Exception as e:
+            log(f"Ошибка показа win10toast: {e}")
+
+# --- Переопределяем функции клика и перемещения ---
 def lclick(x, y, ms_delay=0):
-    pyautogui.click(x, y, button='left')
+    global last_target_pos
+    last_target_pos = [x, y]
+    if pyautogui:
+        pyautogui.click(x, y, button='left')
+    else:
+        log(f"pyautogui не установлен! Не могу кликнуть по ({x},{y})")
     if ms_delay:
         waitms(ms_delay)
 
 def ldown(x, y):
-    pyautogui.mouseDown(x, y, button='left')
+    global last_target_pos
+    last_target_pos = [x, y]
+    if pyautogui:
+        pyautogui.mouseDown(x, y, button='left')
+    else:
+        log(f"pyautogui не установлен! Не могу mouseDown по ({x},{y})")
 
 def lup(x, y):
-    pyautogui.mouseUp(x, y, button='left')
+    global last_target_pos
+    last_target_pos = [x, y]
+    if pyautogui:
+        pyautogui.mouseUp(x, y, button='left')
+    else:
+        log(f"pyautogui не установлен! Не могу mouseUp по ({x},{y})")
 
 def move(x, y):
-    pyautogui.moveTo(x, y)
+    global last_target_pos
+    last_target_pos = [x, y]
+    if pyautogui:
+        pyautogui.moveTo(x, y)
+    else:
+        log(f"pyautogui не установлен! Не могу moveTo ({x},{y})")
 
 LOG_FILE = 'logs.txt'
 
@@ -62,8 +148,40 @@ TRAY_STATUS = 'red'  # red (остановлен), green (работает), yel
 tray_icon = None
 tray_thread = None
 
+# --- Слушатель мыши ---
+try:
+    from pynput import mouse
+except ImportError:
+    mouse = None
+
+mouse_listener = None
+
+def on_mouse_move(x, y):
+    global user_moved_mouse, last_target_pos, script_running
+    if script_running and last_target_pos[0] is not None and last_target_pos[1] is not None:
+        # Если пользователь двигает мышь далеко от целевой точки
+        dist = ((x - last_target_pos[0]) ** 2 + (y - last_target_pos[1]) ** 2) ** 0.5
+        if dist > 30:  # Порог чувствительности (пиксели)
+            user_moved_mouse = True
+            # Возвращаем мышь на место
+            if pyautogui:
+                pyautogui.moveTo(last_target_pos[0], last_target_pos[1])
+            notify_user(
+                "Вмешательство мыши!",
+                "Скрипт продолжает работу. Для остановки нажмите Numpad 2."
+            )
+            log("Пользователь переместил мышь, возвращаем на ({}, {})".format(last_target_pos[0], last_target_pos[1]))
+
+if mouse is not None:
+    mouse_listener = mouse.Listener(on_move=on_mouse_move)
+    mouse_listener.start()
+else:
+    log('pynput.mouse не установлен! Контроль мыши не работает.')
+
 def create_icon(color):
-    # Создаём иконку-кружок нужного цвета
+    if Image is None or ImageDraw is None:
+        log('Pillow (PIL) не установлен!')
+        return None
     img = Image.new('RGBA', (64, 64), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
     if color == 'green':
@@ -82,6 +200,9 @@ def on_tray_exit(icon, item):
 
 def tray_run():
     global tray_icon, TRAY_STATUS
+    if pystray is None:
+        log('pystray не установлен! Трей не будет запущен.')
+        return
     menu = pystray.Menu(pystray.MenuItem('Закрыть', on_tray_exit))
     tray_icon = pystray.Icon('valya', create_icon(TRAY_STATUS), 'Valya', menu)
     tray_icon.run()
@@ -190,8 +311,11 @@ def on_press(key):
         script_thread = threading.Thread(target=clean_maintenance)
         script_thread.start()
 
-listener = keyboard.Listener(on_press=on_press)
-listener.start()
+if keyboard is not None:
+    listener = keyboard.Listener(on_press=on_press)
+    listener.start()
+else:
+    log('pynput не установлен! Горячие клавиши не будут работать.')
 
 # --- Функция обслуживания (очистка кеша + очистка сухостоя) ---
 def clean_maintenance():
@@ -385,6 +509,9 @@ def collect_rows_loop():
     update_tray_status('red')
 
 def check_internet_speed_and_alert():
+    if speedtest is None:
+        log('speedtest-cli не установлен! Пропускаю проверку скорости интернета.')
+        return
     try:
         st = speedtest.Speedtest()
         st.get_best_server()
@@ -404,13 +531,43 @@ def check_internet_speed_and_alert():
                    f"Рекомендуется проверить подключение!")
             log(msg)
             try:
-                pyautogui.alert(text=msg, title='Плохое интернет-соединение', button='OK')
+                if tk and messagebox:
+                    root = tk.Tk()
+                    root.withdraw()
+                    messagebox.showwarning('Плохое интернет-соединение', msg)
+                    root.destroy()
+                else:
+                    log('tkinter не установлен! Не могу показать окно предупреждения.')
             except Exception as e:
                 log(f"Ошибка показа алерта: {e}")
     except Exception as e:
         log(f"Ошибка проверки скорости интернета: {e}")
 
+def print_info():
+    # Цвета ANSI
+    RED = '\033[91m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    CYAN = '\033[96m'
+    RESET = '\033[0m'
+    BOLD = '\033[1m'
+    print(f"{BOLD}{CYAN}Добро пожаловать в помощник Valya!{RESET}")
+    print(f"{BOLD}Назначение:{RESET} автоматизация действий в игре (посадка, сбор, обслуживание).\n")
+    print(f"{BOLD}Горячие клавиши:{RESET}")
+    print(f"  {GREEN}Numpad 1{RESET}  — ▶️  Запуск полного цикла (посадка + сбор)")
+    print(f"  {RED}Numpad 2{RESET}  — ⏹️  Остановка скрипта")
+    print(f"  {YELLOW}Numpad 3{RESET}  — 🔄  Запуск только сбора урожая")
+    print(f"  {CYAN}Numpad 4{RESET}  — 🧹  Очистка кеша и сухостоя (обслуживание)\n")
+    print(f"{BOLD}Статусы трея:{RESET}")
+    print(f"  {GREEN}🟢  Зеленый{RESET} — скрипт работает")
+    print(f"  {YELLOW}🟡  Желтый{RESET} — пауза/обслуживание")
+    print(f"  {RED}🔴  Красный{RESET} — скрипт остановлен\n")
+    print(f"{BOLD}Логи:{RESET} пишутся в файл logs.txt")
+    print(f"{BOLD}Внимание:{RESET} для работы нужны разрешения на управление мышью и клавиатурой!")
+    print(f"{CYAN}Удачной автоматизации! 🚀{RESET}\n")
+
 if __name__ == "__main__":
+    print_info()
     check_internet_speed_and_alert()
     log("Для запуска нажмите Numpad 1, для остановки — Numpad 2, для запуска только сбора — Numpad 3, для очистки кеша и сухостоя — Numpad 4.")
     while True:

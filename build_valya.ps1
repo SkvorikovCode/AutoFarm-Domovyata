@@ -1,4 +1,6 @@
 ﻿# Скрипт сборки Valya для Windows
+# Требуемые зависимости: pyautogui, pynput, pystray, pillow, speedtest-cli, win10toast
+# pip install -r requirements.txt
 # Проверка платформы
 if (-not $IsWindows -and -not $env:OS -like "*Windows*") {
     Write-Host "ВНИМАНИЕ: Этот скрипт предназначен для запуска только на Windows!" -ForegroundColor Red
@@ -38,10 +40,20 @@ pip install -r requirements.txt
 
 # Проверка критических зависимостей, упомянутых в ошибках линтера
 Write-Host "Проверка критических зависимостей..." -ForegroundColor Cyan
-$critical_packages = @("pystray", "pillow", "speedtest-cli")
+$critical_packages = @("pystray", "pillow", "speedtest-cli", "win10toast")
 foreach ($package in $critical_packages) {
     Write-Host "Проверка пакета $package..." -ForegroundColor Gray
     pip install $package
+}
+
+# Проверка наличия mouse.ico и main.py
+if (-not (Test-Path -Path "mouse.ico")) {
+    Write-Host "Файл mouse.ico не найден!" -ForegroundColor Red
+    exit 1
+}
+if (-not (Test-Path -Path "main.py")) {
+    Write-Host "Файл main.py не найден!" -ForegroundColor Red
+    exit 1
 }
 
 # Установка pyinstaller
