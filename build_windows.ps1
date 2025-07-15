@@ -56,6 +56,22 @@ if (-not (Test-Path -Path "main.py")) {
     exit 1
 }
 
+# Проверка наличия requirements.txt
+if (-not (Test-Path -Path "requirements.txt")) {
+    Write-Host "Файл requirements.txt не найден!" -ForegroundColor Red
+    exit 1
+}
+# Проверка наличия templates/bad_lutic.png
+if (-not (Test-Path -Path "templates/bad_lutic.png")) {
+    Write-Host "Файл templates/bad_lutic.png не найден!" -ForegroundColor Red
+    exit 1
+}
+# Копирование шаблонов в dist/templates
+if (-not (Test-Path -Path "dist/templates")) {
+    New-Item -ItemType Directory -Path "dist/templates" | Out-Null
+}
+Copy-Item -Path "templates/*.png" -Destination "dist/templates/" -Force
+
 # Установка pyinstaller
 Write-Host "Установка pyinstaller..." -ForegroundColor Cyan
 pip install pyinstaller
