@@ -385,7 +385,7 @@ def main():
             screenshot_and_click_template(templates_dir="templates", threshold=0.85, template_name="lutic.png")
             last_lutic_check = time.time()
     log("[main] Сбор низ завершён")
-    wait(2)  # Пауза между сбором низа и сбором верха
+    wait(5)  # Пауза между сбором низа и сбором верха
     # --- Сбор верх ---
     last_lutic_check = time.time()
     for var in range(480, 1410, STEP_TOP):
