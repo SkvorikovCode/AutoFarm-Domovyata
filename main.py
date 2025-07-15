@@ -71,8 +71,9 @@ except ImportError:
 # STOP_KEY = keyboard.KeyCode.from_vk(98)   # Numpad 2
 
 # --- Настройки шагов ---
-STEP_BOTTOM_BEFORE = 6  # до крестика (рекомендуется 6-8, можно менять)
-STEP_BOTTOM_AFTER = 6   # после крестика
+# Было: STEP_BOTTOM_BEFORE = 6, STEP_BOTTOM_AFTER = 6
+STEP_BOTTOM_BEFORE = 12  # до крестика (реже клики)
+STEP_BOTTOM_AFTER = 12   # после крестика (реже клики)
 STEP_TOP = 3            # верх (оставим как было, если нужно - меняй)
 
 # --- Настройки циклов ---
