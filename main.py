@@ -422,7 +422,7 @@ def main_loop():
         update_tray_status('yellow')
         log('Пауза 30 секунд перед следующим циклом...')
         # --- Чистим мусор по шаблону bad_lutic.png ---
-        screenshot_and_click_template(templates_dir="templates", threshold=0.85)
+        screenshot_and_click_template(templates_dir="templates", threshold=0.85, template_name="bad_lutic.png")
         for i in range(30, 0, -1):
             if stop_script:
                 break
@@ -489,7 +489,7 @@ def collect_rows_loop():
         update_tray_status('yellow')
         log('Пауза 30 секунд перед следующим циклом...')
         # --- Чистим мусор по шаблону bad_lutic.png ---
-        screenshot_and_click_template(templates_dir="templates", threshold=0.85)
+        screenshot_and_click_template(templates_dir="templates", threshold=0.85, template_name="bad_lutic.png")
         for i in range(30, 0, -1):
             if stop_script:
                 break
@@ -588,10 +588,11 @@ def run_updater():
 
 run_updater()
 
-def screenshot_and_click_template(templates_dir="templates", threshold=0.85):
+def screenshot_and_click_template(templates_dir="templates", threshold=0.85, template_name=None):
     """
-    Делает скриншот экрана, ищет все шаблоны из templates_dir,
-    кликает по центру первого найденного совпадения (по любому шаблону).
+    Делает скриншот экрана, ищет шаблон(ы) из templates_dir.
+    Если указан template_name — ищет только этот шаблон.
+    Кликает по центру первого найденного совпадения.
     threshold — порог совпадения (0..1)
     """
     if pyautogui is None or cv2 is None or Image is None or np is None:
@@ -602,8 +603,11 @@ def screenshot_and_click_template(templates_dir="templates", threshold=0.85):
     screenshot = screenshot.convert('RGB')
     screen_np = np.array(screenshot)
     screen_gray = cv2.cvtColor(screen_np, cv2.COLOR_RGB2GRAY)
-    # Перебор шаблонов
-    template_files = glob.glob(os.path.join(templates_dir, "*.png"))
+    # Определяем список шаблонов
+    if template_name:
+        template_files = [os.path.join(templates_dir, template_name)]
+    else:
+        template_files = glob.glob(os.path.join(templates_dir, "*.png"))
     for template_path in template_files:
         template = cv2.imread(template_path, cv2.IMREAD_GRAYSCALE)
         if template is None:
