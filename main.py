@@ -8,6 +8,7 @@ import threading
 import sys
 import os
 import subprocess
+import requests
 
 # Импортируем pyautogui
 try:
@@ -536,15 +537,34 @@ def print_info():
     print(f"{BOLD}Внимание:{RESET} для работы нужны разрешения на управление мышью и клавиатурой!")
     print(f"{CYAN}Удачной автоматизации! 🚀{RESET}\n")
 
+def download_update_exe():
+    """Скачивает update.exe из последнего релиза на GitHub, если его нет."""
+    url = "https://github.com/SkvorikovCode/AutoFarm-Domovyata/releases/latest/download/update.exe"
+    try:
+        r = requests.get(url, stream=True, timeout=30)
+        r.raise_for_status()
+        with open('update.exe', 'wb') as f:
+            for chunk in r.iter_content(1024 * 1024):
+                f.write(chunk)
+        print('update.exe успешно скачан из GitHub Releases.')
+        log('update.exe успешно скачан из GitHub Releases.')
+        return True
+    except Exception as e:
+        print(f'Ошибка скачивания update.exe: {e}')
+        log(f'Ошибка скачивания update.exe: {e}')
+        return False
+
 def run_updater():
     updater_path = os.path.join(os.path.dirname(sys.executable), 'update.exe')
-    if os.path.exists(updater_path):
-        try:
-            subprocess.Popen([updater_path], close_fds=True)
-        except Exception as e:
-            print(f'Ошибка запуска update.exe: {e}')
-    else:
-        print('Внимание: update.exe не найден! Автообновление не работает.')
+    if not os.path.exists(updater_path):
+        print('update.exe не найден! Пробую скачать из GitHub Releases...')
+        if not download_update_exe():
+            print('Автообновление не работает: не удалось скачать update.exe.')
+            return
+    try:
+        subprocess.Popen([updater_path], close_fds=True)
+    except Exception as e:
+        print(f'Ошибка запуска update.exe: {e}')
 
 run_updater()
 
