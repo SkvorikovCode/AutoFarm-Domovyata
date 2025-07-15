@@ -4,4 +4,6 @@ pystray
 pillow
 speedtest-cli
 win10toast
-colorama 
+colorama
+opencv-python
+numpy 
