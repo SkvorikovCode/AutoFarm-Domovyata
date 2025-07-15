@@ -9,6 +9,7 @@ import sys
 import os
 import subprocess
 import requests
+import glob
 
 # Импортируем pyautogui
 try:
@@ -67,6 +68,20 @@ try:
     colorama.init()
 except ImportError:
     colorama = None
+
+# Импортируем opencv-python (cv2) для работы с шаблонами
+try:
+    import cv2
+except ImportError:
+    cv2 = None
+    print('opencv-python (cv2) не установлен!')
+
+# Импортируем numpy для работы с изображениями
+try:
+    import numpy as np
+except ImportError:
+    np = None
+    print('numpy не установлен!')
 
 # --- Настройки ---
 # START_KEY = keyboard.KeyCode.from_vk(97)  # Numpad 1
@@ -568,6 +583,38 @@ def run_updater():
         print(f'Ошибка запуска update.exe: {e}')
 
 run_updater()
+
+def screenshot_and_click_template(templates_dir="templates", threshold=0.85):
+    """
+    Делает скриншот экрана, ищет все шаблоны из templates_dir,
+    кликает по центру первого найденного совпадения (по любому шаблону).
+    threshold — порог совпадения (0..1)
+    """
+    if pyautogui is None or cv2 is None or Image is None or np is None:
+        print("pyautogui, cv2, numpy или Pillow не установлены!")
+        return False
+    # Скриншот экрана
+    screenshot = pyautogui.screenshot()
+    screenshot = screenshot.convert('RGB')
+    screen_np = np.array(screenshot)
+    screen_gray = cv2.cvtColor(screen_np, cv2.COLOR_RGB2GRAY)
+    # Перебор шаблонов
+    template_files = glob.glob(os.path.join(templates_dir, "*.png"))
+    for template_path in template_files:
+        template = cv2.imread(template_path, cv2.IMREAD_GRAYSCALE)
+        if template is None:
+            continue
+        res = cv2.matchTemplate(screen_gray, template, cv2.TM_CCOEFF_NORMED)
+        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+        if max_val >= threshold:
+            h, w = template.shape
+            center_x = max_loc[0] + w // 2
+            center_y = max_loc[1] + h // 2
+            print(f"Шаблон найден: {template_path}, совпадение: {max_val:.2f}, координаты: ({center_x}, {center_y})")
+            lclick(center_x, center_y)
+            return True
+    print("Совпадений с шаблонами не найдено.")
+    return False
 
 if __name__ == "__main__":
     print_info()
