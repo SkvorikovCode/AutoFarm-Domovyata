@@ -118,6 +118,10 @@ if (Test-Path -Path "dist\main_console.exe") {
     if (Test-Path -Path "README.md") {
         Copy-Item -Path "README.md" -Destination "dist\"
     }
+    # --- Записываем версию из git в dist\version.txt ---
+    $version = git describe --tags --abbrev=0
+    Set-Content -Path "dist\version.txt" -Value $version
+    Write-Host "Файл version.txt с версией $version создан в dist." -ForegroundColor Cyan
     Write-Host "`nГотово! Файлы находятся в папке dist:" -ForegroundColor Green
     Write-Host "- dist\main_console.exe - версия с консолью (основная)" -ForegroundColor White
     if (Test-Path -Path "dist\update.exe") {
