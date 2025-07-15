@@ -41,5 +41,4 @@ jobs:
         with:
           files: dist/main_console.exe
           generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }}
