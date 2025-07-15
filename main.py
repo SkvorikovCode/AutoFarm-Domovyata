@@ -233,29 +233,7 @@ tray_thread = threading.Thread(target=tray_run, daemon=True)
 tray_thread.start()
 
 # --- Функция очистки кеша игры ---
-def clean_game_cache():
-    log("===> Начало очистки кеша игры")
-    update_tray_status('yellow')
-    try:
-        # КООРДИНАТЫ ДЛЯ ЗАПОЛНЕНИЯ - ОЧИСТКА КЕША
-        # Примерный алгоритм:
-        # 1. Клик по настройкам/меню
-        lclick(0, 0)  # ЗАМЕНИТЬ! КООРДИНАТЫ КНОПКИ НАСТРОЕК/МЕНЮ
-        wait(1)
-        
-        # 2. Клик по пункту очистки кеша или перезагрузки
-        lclick(0, 0)  # ЗАМЕНИТЬ! КООРДИНАТЫ ПУНКТА ОЧИСТКИ КЕША
-        wait(2)
-        
-        # 3. Подтверждение (если требуется)
-        lclick(0, 0)  # ЗАМЕНИТЬ! КООРДИНАТЫ КНОПКИ ПОДТВЕРЖДЕНИЯ
-        wait(5)  # Подождать завершения очистки
-        
-        log("Кеш игры очищен")
-    except Exception as e:
-        log(f"ОШИБКА ПРИ ОЧИСТКЕ КЕША: {e}")
-    update_tray_status('green')
-    log("<=== Завершение очистки кеша игры")
+# Удаляем функцию clean_game_cache и все её вызовы
 
 # --- Функция очистки сухостоя ---
 def clean_withered_plants():
@@ -318,12 +296,8 @@ def on_press(key):
         script_thread = threading.Thread(target=collect_rows_loop)
         script_thread.start()
     elif (vk_code == 100 or name == 'num4') and not script_running:
-        log("Запущена очистка кеша и сухостоя (Numpad 4)")
-        stop_script = False
-        script_running = True
-        update_tray_status('green')
-        script_thread = threading.Thread(target=clean_maintenance)
-        script_thread.start()
+        # Удаляем запуск очистки кеша и сухостоя по Numpad 4
+        pass
 
 if keyboard is not None:
     listener = keyboard.Listener(on_press=on_press)
@@ -332,22 +306,7 @@ else:
     log('pynput не установлен! Горячие клавиши не будут работать.')
 
 # --- Функция обслуживания (очистка кеша + очистка сухостоя) ---
-def clean_maintenance():
-    global stop_script, script_running
-    try:
-        log("===> Начало обслуживания (очистка кеша + сухостоя)")
-        update_tray_status('yellow')
-        clean_game_cache()
-        if stop_script:
-            script_running = False
-            update_tray_status('red')
-            return
-        clean_withered_plants()
-        log("<=== Обслуживание завершено")
-    except Exception as e:
-        log(f"ОШИБКА В ОБСЛУЖИВАНИИ: {e}")
-    script_running = False
-    update_tray_status('red')
+# Удаляем функцию clean_maintenance и все её вызовы
 
 # --- Основная логика ---
 def main():
