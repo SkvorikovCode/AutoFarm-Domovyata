@@ -30,7 +30,7 @@ jobs:
           pyinstaller --onefile --console main.py --name main_console.exe
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: main_console.exe
           path: dist/main_console.exe
