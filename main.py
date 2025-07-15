@@ -365,7 +365,7 @@ def main():
         lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), CLICK_DELAY)
         var += step - STEP_BOTTOM  # увеличиваем var дополнительно, если шаг увеличен
     log("[main] Сбор низ завершён")
-    wait(2)  # Пауза между сбором низа и сбором верха
+    wait(5)  # Пауза между сбором низа и сбором верха
     # --- Сбор верх ---
     for var in range(480, 1410, STEP_TOP):
         if stop_script: return
