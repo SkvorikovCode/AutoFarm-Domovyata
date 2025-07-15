@@ -71,10 +71,11 @@ except ImportError:
 # STOP_KEY = keyboard.KeyCode.from_vk(98)   # Numpad 2
 
 # --- Настройки шагов ---
-# Было: STEP_BOTTOM_BEFORE = 6, STEP_BOTTOM_AFTER = 6
-STEP_BOTTOM_BEFORE = 12  # до крестика (реже клики)
-STEP_BOTTOM_AFTER = 12   # после крестика (реже клики)
-STEP_TOP = 3            # верх (оставим как было, если нужно - меняй)
+# Было: STEP_BOTTOM_BEFORE = 12, STEP_BOTTOM_AFTER = 12
+STEP_BOTTOM = 12  # основной шаг по низу
+STEP_CROSS = 18   # шаг по области крестика (ещё реже)
+STEP_TOP = 3      # верх (оставим как было)
+CLICK_DELAY = 55  # задержка между кликами (мс), замедлено на 30%
 
 # --- Настройки циклов ---
 CACHE_CLEAN_INTERVAL = 3  # Очистка кеша каждые N циклов
@@ -360,7 +361,7 @@ def main():
     lup(290, 276)
     wait(0.4)
     move(1142, 612)
-    wait(1.5)  # Увеличенная задержка перед выбором растения
+    wait(1.5)
     waitms(80)
     ldown(745, 405)
     waitms(80)
@@ -370,16 +371,16 @@ def main():
         if stop_script: return
         lclick(var + rnd(-2, 0), 276 + rnd(-3, 1), 36)
     lclick(1850, 350)
-    wait(3.2)  # Пауза перед сбором снизу
+    wait(3.2)
     log("[main] Посадка низ завершена")
-    wait(8)  # Пауза между посадкой низа и посадкой верха
+    wait(8)
     # --- Посадка верх ---
     ldown(580, 132)
     wait(0.4)
     lup(580, 132)
     wait(0.4)
     move(1142, 612)
-    wait(1.5)  # Увеличенная задержка перед выбором растения
+    wait(1.5)
     waitms(80)
     ldown(745, 405)
     waitms(80)
@@ -390,20 +391,19 @@ def main():
         lclick(var + rnd(-2, 0), 132 + rnd(-3, 1), 36)
     lclick(1850, 350)
     log("[main] Посадка верх завершена")
-    # --- Сбор низ до крестика ---
-    for var in range(150, 1145, STEP_BOTTOM_BEFORE):
+    # --- Сбор низ (единый проход, включая крестик) ---
+    for var in range(150, 1825, STEP_BOTTOM):
         if stop_script: return
+        # Если в области крестика — кликаем реже
+        if 1260 <= var <= 1320:
+            step = STEP_CROSS
+        else:
+            step = STEP_BOTTOM
         for offset in range(0, 7, 2):
-            lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 40)  # увеличена задержка
-        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 40)  # увеличена задержка
-    log("[main] Сбор низ до крестика завершён")
-    # --- Сбор низ после крестика ---
-    for var in range(1260, 1825, STEP_BOTTOM_AFTER):
-        if stop_script: return
-        for offset in range(0, 7, 2):
-            lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 9)
-        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
-    log("[main] Сбор низ после крестика завершён")
+            lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), CLICK_DELAY)
+        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), CLICK_DELAY)
+        var += step - STEP_BOTTOM  # увеличиваем var дополнительно, если шаг увеличен
+    log("[main] Сбор низ завершён")
     # --- Сбор верх ---
     for var in range(480, 1410, STEP_TOP):
         if stop_script: return
@@ -457,20 +457,18 @@ def collect_rows_only():
     global stop_script
     log("===> Начало collect_rows_only() (только сбор)")
     update_tray_status('green')
-    # --- Сбор низ до крестика ---
-    for var in range(150, 1145, STEP_BOTTOM_BEFORE):
+    # --- Сбор низ (единый проход, включая крестик) ---
+    for var in range(150, 1825, STEP_BOTTOM):
         if stop_script: return
+        if 1260 <= var <= 1320:
+            step = STEP_CROSS
+        else:
+            step = STEP_BOTTOM
         for offset in range(0, 7, 2):
-            lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 40)  # увеличена задержка
-        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 40)  # увеличена задержка
-    log("[collect_rows_only] Сбор низ до крестика завершён")
-    # --- Сбор низ после крестика ---
-    for var in range(1260, 1825, STEP_BOTTOM_AFTER):
-        if stop_script: return
-        for offset in range(0, 7, 2):
-            lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 40)  # увеличена задержка
-        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 40)  # увеличена задержка
-    log("[collect_rows_only] Сбор низ после крестика завершён")
+            lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), CLICK_DELAY)
+        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), CLICK_DELAY)
+        var += step - STEP_BOTTOM
+    log("[collect_rows_only] Сбор низ завершён")
     # --- Сбор верх ---
     for var in range(480, 1410, STEP_TOP):
         if stop_script: return
