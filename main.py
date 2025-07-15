@@ -369,6 +369,7 @@ def main():
     log("[main] Посадка верх завершена")
     # --- Сбор низ (единый проход, включая крестик) ---
     last_lutic_check = time.time()
+    last_close_check = time.time()
     for var in range(147, 1825, STEP_BOTTOM):  # было 140, теперь 143
         if stop_script: return
         # Если в области крестика — кликаем реже
@@ -378,25 +379,34 @@ def main():
             step = STEP_BOTTOM
         for offset in range(0, 7, 2):
             lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), CLICK_DELAY)
-        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), CLICK_DELAY)
+        # lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), CLICK_DELAY)  # УБРАНО: клик по крестику
         var += step - STEP_BOTTOM  # увеличиваем var дополнительно, если шаг увеличен
         # --- Дополнительный сбор лютиков по шаблону каждые 10 сек ---
         if time.time() - last_lutic_check > 10:
             screenshot_and_click_template(templates_dir="templates", threshold=0.85, template_name="lutic.png")
             last_lutic_check = time.time()
+        # --- Поиск и клик по крестику через шаблон каждые 5 сек ---
+        if time.time() - last_close_check > 5:
+            screenshot_and_click_template(templates_dir="templates", threshold=0.85, template_name="close.png")
+            last_close_check = time.time()
     log("[main] Сбор низ завершён")
     wait(5)  # Пауза между сбором низа и сбором верха
     # --- Сбор верх ---
     last_lutic_check = time.time()
+    last_close_check = time.time()
     for var in range(480, 1410, STEP_TOP):
         if stop_script: return
         for offset in range(0, 7, 2):
             lclick(var + offset + rnd(-2, 1), 49 + rnd(-2, 2), 9)
-        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
+        # lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)  # УБРАНО: клик по крестику
         # --- Дополнительный сбор лютиков по шаблону каждые 10 сек ---
         if time.time() - last_lutic_check > 10:
             screenshot_and_click_template(templates_dir="templates", threshold=0.85, template_name="lutic.png")
             last_lutic_check = time.time()
+        # --- Поиск и клик по крестику через шаблон каждые 5 сек ---
+        if time.time() - last_close_check > 5:
+            screenshot_and_click_template(templates_dir="templates", threshold=0.85, template_name="close.png")
+            last_close_check = time.time()
     log("[main] Сбор верх завершён")
     wait(random.uniform(-1.2, 1.2))
     update_tray_status('yellow')
