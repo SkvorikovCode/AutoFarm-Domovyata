@@ -99,9 +99,13 @@ def notify_user(title, msg):
     if ToastNotifier is not None:
         try:
             toaster = ToastNotifier()
-            toaster.show_toast(title, msg, duration=5, threaded=True)
+            result = toaster.show_toast(title, msg, duration=5, threaded=False)
+            if not result:
+                log(f"win10toast: уведомление не было показано (show_toast вернул False)")
         except Exception as e:
             log(f"Ошибка показа win10toast: {e}")
+    else:
+        log('win10toast не установлен! Не могу показать системное уведомление.')
 
 # --- Переопределяем функции клика и перемещения ---
 def lclick(x, y, ms_delay=0):
@@ -423,17 +427,17 @@ def main_loop():
             main()
         except Exception as e:
             log(f"ОШИБКА В main(): {e}")
-            
-        # Проверка на необходимость очистки кеша
-        if cycle_counter % CACHE_CLEAN_INTERVAL == 0:
-            log(f"Достигнут {cycle_counter}-й цикл, выполняем очистку кеша и сухостоя")
-            clean_game_cache()
-            if stop_script:
-                break
-            clean_withered_plants()
-            if stop_script:
-                break
-            
+        
+        # Временно отключено:
+        # if cycle_counter % CACHE_CLEAN_INTERVAL == 0:
+        #     log(f"Достигнут {cycle_counter}-й цикл, выполняем очистку кеша и сухостоя")
+        #     clean_game_cache()
+        #     if stop_script:
+        #         break
+        #     clean_withered_plants()
+        #     if stop_script:
+        #         break
+        
         log("<=== main() завершён, пауза перед следующим циклом")
         if stop_script:
             break
@@ -490,17 +494,17 @@ def collect_rows_loop():
             collect_rows_only()
         except Exception as e:
             log(f"ОШИБКА В collect_rows_only(): {e}")
-            
-        # Проверка на необходимость очистки кеша
-        if cycle_counter % CACHE_CLEAN_INTERVAL == 0:
-            log(f"Достигнут {cycle_counter}-й цикл, выполняем очистку кеша и сухостоя")
-            clean_game_cache()
-            if stop_script:
-                break
-            clean_withered_plants()
-            if stop_script:
-                break
-            
+        
+        # Временно отключено:
+        # if cycle_counter % CACHE_CLEAN_INTERVAL == 0:
+        #     log(f"Достигнут {cycle_counter}-й цикл, выполняем очистку кеша и сухостоя")
+        #     clean_game_cache()
+        #     if stop_script:
+        #         break
+        #     clean_withered_plants()
+        #     if stop_script:
+        #         break
+        
         log("<=== collect_rows_only() завершён, пауза перед следующим циклом")
         if stop_script:
             break
