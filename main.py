@@ -7,6 +7,7 @@ import random
 import threading
 import sys
 import os
+import subprocess
 
 # Импортируем pyautogui
 try:
@@ -575,6 +576,18 @@ def print_info():
     print(f"{BOLD}Логи:{RESET} пишутся в файл logs.txt")
     print(f"{BOLD}Внимание:{RESET} для работы нужны разрешения на управление мышью и клавиатурой!")
     print(f"{CYAN}Удачной автоматизации! 🚀{RESET}\n")
+
+def run_updater():
+    updater_path = os.path.join(os.path.dirname(sys.executable), 'update.exe')
+    if os.path.exists(updater_path):
+        try:
+            subprocess.Popen([updater_path], close_fds=True)
+        except Exception as e:
+            print(f'Ошибка запуска update.exe: {e}')
+    else:
+        print('Внимание: update.exe не найден! Автообновление не работает.')
+
+run_updater()
 
 if __name__ == "__main__":
     print_info()
