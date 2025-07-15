@@ -61,33 +61,53 @@ Write-Host "Установка pyinstaller..." -ForegroundColor Cyan
 pip install pyinstaller
 
 # Сборка main.py в exe с иконкой mouse.ico
-Write-Host "Начинаю сборку исполняемого файла..." -ForegroundColor Green
-pyinstaller --onefile --noconsole --icon=mouse.ico main.py
+# Write-Host "Начинаю сборку исполняемого файла..." -ForegroundColor Green
+# pyinstaller --onefile --noconsole --icon=mouse.ico main.py
 
 # Проверка успешности сборки
+# if (-not $?) {
+#     Write-Host "Ошибка при сборке! Проверьте вывод выше." -ForegroundColor Red
+#     exit 1
+# }
+
+# if (Test-Path -Path "dist\main.exe") {
+#     # Копирование README или другой документации, если существует
+#     if (Test-Path -Path "README.md") {
+#         Copy-Item -Path "README.md" -Destination "dist\"
+#     }
+#     
+#     # Создание версии без консоли и с консолью
+#     Write-Host "Сборка версии с консолью (для отладки)..." -ForegroundColor Cyan
+#     pyinstaller --onefile --icon=mouse.ico main.py -n main_console.exe
+#     
+#     Write-Host "`nГотово! Файлы находятся в папке dist:" -ForegroundColor Green
+#     Write-Host "- dist\main.exe - основной файл (без консоли)" -ForegroundColor White
+#     if (Test-Path -Path "dist\main_console.exe") {
+#         Write-Host "- dist\main_console.exe - версия с консолью (для отладки)" -ForegroundColor White
+#     }
+#     
+#     # Открытие папки с результатами
+#     explorer.exe "dist"
+# } else {
+#     Write-Host "Файл main.exe не найден в папке dist. Что-то пошло не так!" -ForegroundColor Red
+# }
+
+# --- Оставляем только сборку консольного варианта ---
+Write-Host "Сборка только консольной версии (main_console.exe)..." -ForegroundColor Green
+pyinstaller --onefile --icon=mouse.ico main.py -n main_console.exe
+
 if (-not $?) {
     Write-Host "Ошибка при сборке! Проверьте вывод выше." -ForegroundColor Red
     exit 1
 }
 
-if (Test-Path -Path "dist\main.exe") {
-    # Копирование README или другой документации, если существует
+if (Test-Path -Path "dist\main_console.exe") {
     if (Test-Path -Path "README.md") {
         Copy-Item -Path "README.md" -Destination "dist\"
     }
-    
-    # Создание версии без консоли и с консолью
-    Write-Host "Сборка версии с консолью (для отладки)..." -ForegroundColor Cyan
-    pyinstaller --onefile --icon=mouse.ico main.py -n main_console.exe
-    
-    Write-Host "`nГотово! Файлы находятся в папке dist:" -ForegroundColor Green
-    Write-Host "- dist\main.exe - основной файл (без консоли)" -ForegroundColor White
-    if (Test-Path -Path "dist\main_console.exe") {
-        Write-Host "- dist\main_console.exe - версия с консолью (для отладки)" -ForegroundColor White
-    }
-    
-    # Открытие папки с результатами
+    Write-Host "`nГотово! Файл находится в папке dist:" -ForegroundColor Green
+    Write-Host "- dist\main_console.exe - версия с консолью (основная)" -ForegroundColor White
     explorer.exe "dist"
 } else {
-    Write-Host "Файл main.exe не найден в папке dist. Что-то пошло не так!" -ForegroundColor Red
+    Write-Host "Файл main_console.exe не найден в папке dist. Что-то пошло не так!" -ForegroundColor Red
 }
