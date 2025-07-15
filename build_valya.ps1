@@ -93,6 +93,10 @@ pip install pyinstaller
 # }
 
 # --- Оставляем только сборку консольного варианта ---
+if (-not (Test-Path -Path "update.py")) {
+    Write-Host "Файл update.py не найден!" -ForegroundColor Red
+    exit 1
+}
 Write-Host "Сборка только консольной версии (main_console.exe)..." -ForegroundColor Green
 pyinstaller --onefile --icon=mouse.ico main.py -n main_console.exe
 
@@ -101,12 +105,24 @@ if (-not $?) {
     exit 1
 }
 
+# --- Сборка update.exe ---
+Write-Host "Сборка update.exe..." -ForegroundColor Green
+pyinstaller --onefile --icon=mouse.ico update.py -n update.exe
+
+if (-not $?) {
+    Write-Host "Ошибка при сборке update.exe! Проверьте вывод выше." -ForegroundColor Red
+    exit 1
+}
+
 if (Test-Path -Path "dist\main_console.exe") {
     if (Test-Path -Path "README.md") {
         Copy-Item -Path "README.md" -Destination "dist\"
     }
-    Write-Host "`nГотово! Файл находится в папке dist:" -ForegroundColor Green
+    Write-Host "`nГотово! Файлы находятся в папке dist:" -ForegroundColor Green
     Write-Host "- dist\main_console.exe - версия с консолью (основная)" -ForegroundColor White
+    if (Test-Path -Path "dist\update.exe") {
+        Write-Host "- dist\update.exe - обновлятор" -ForegroundColor White
+    }
     explorer.exe "dist"
 } else {
     Write-Host "Файл main_console.exe не найден в папке dist. Что-то пошло не так!" -ForegroundColor Red
