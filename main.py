@@ -392,7 +392,7 @@ def main():
     lclick(1850, 350)
     log("[main] Посадка верх завершена")
     # --- Сбор низ (единый проход, включая крестик) ---
-    for var in range(143, 1825, STEP_BOTTOM):  # было 140, теперь 143
+    for var in range(145, 1825, STEP_BOTTOM):  # было 140, теперь 143
         if stop_script: return
         # Если в области крестика — кликаем реже
         if 1260 <= var <= 1320:
@@ -458,7 +458,7 @@ def collect_rows_only():
     log("===> Начало collect_rows_only() (только сбор)")
     update_tray_status('green')
     # --- Сбор низ (единый проход, включая крестик) ---
-    for var in range(143, 1825, STEP_BOTTOM):  # было 140, теперь 143
+    for var in range(145, 1825, STEP_BOTTOM):  # было 140, теперь 143
         if stop_script: return
         if 1260 <= var <= 1320:
             step = STEP_CROSS
