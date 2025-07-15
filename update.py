@@ -7,11 +7,11 @@ import requests
 GITHUB_REPO = 'SkvorikovCode/Valya'
 RELEASE_ASSET = 'main_console.exe'
 LOCAL_EXE = 'main_console.exe'
+VERSION_FILE = 'version.txt'
 
 # --- Функция завершения main_console.exe ---
 def kill_main():
     try:
-        # Windows: taskkill
         subprocess.call(['taskkill', '/F', '/IM', LOCAL_EXE])
     except Exception as e:
         print(f'Ошибка завершения {LOCAL_EXE}: {e}')
@@ -30,30 +30,45 @@ def download_new_exe(download_url, dest):
         print(f'Ошибка скачивания: {e}')
         return False
 
-# --- Проверка новой версии через GitHub Releases ---
-def get_latest_release_asset_url():
+# --- Получение информации о последнем релизе ---
+def get_latest_release_info():
     api_url = f'https://api.github.com/repos/{GITHUB_REPO}/releases/latest'
     try:
         resp = requests.get(api_url)
         resp.raise_for_status()
         data = resp.json()
+        tag = data.get('tag_name')
         for asset in data.get('assets', []):
             if asset['name'] == RELEASE_ASSET:
-                return asset['browser_download_url']
+                return tag, asset['browser_download_url']
     except Exception as e:
         print(f'Ошибка получения релиза: {e}')
+    return None, None
+
+# --- Работа с локальной версией ---
+def get_local_version():
+    if os.path.exists(VERSION_FILE):
+        with open(VERSION_FILE, 'r') as f:
+            return f.read().strip()
     return None
+
+def save_local_version(version):
+    with open(VERSION_FILE, 'w') as f:
+        f.write(version)
 
 # --- Основная логика ---
 def main():
     print('Проверка обновлений...')
-    url = get_latest_release_asset_url()
-    if not url:
-        print('Не удалось получить ссылку на новую версию.')
+    tag, url = get_latest_release_info()
+    local_version = get_local_version()
+    if not tag or not url:
+        print('Не удалось получить информацию о новой версии.')
         return
-    # TODO: сравнить версию/хэш локального exe и удалённого (можно по времени или версии)
-    # Для простоты — всегда обновлять
-    print('Обновление найдено! Завершаю main_console.exe...')
+    if tag == local_version:
+        print(f'У вас уже последняя версия ({tag}).')
+        return
+    print(f'Обнаружена новая версия: {tag} (текущая: {local_version})')
+    print('Завершаю main_console.exe...')
     kill_main()
     time.sleep(2)
     print('Удаляю старый main_console.exe...')
@@ -63,6 +78,8 @@ def main():
         print(f'Ошибка удаления: {e}')
     print('Скачиваю новую версию...')
     if download_new_exe(url, LOCAL_EXE):
+        print('Сохраняю новый тег версии...')
+        save_local_version(tag)
         print('Запускаю новый main_console.exe...')
         subprocess.Popen([LOCAL_EXE], close_fds=True)
     else:
