@@ -394,8 +394,8 @@ def main():
     for var in range(150, 1145, STEP_BOTTOM_BEFORE):
         if stop_script: return
         for offset in range(0, 7, 2):
-            lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 9)
-        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
+            lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 40)  # увеличена задержка
+        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 40)  # увеличена задержка
     log("[main] Сбор низ до крестика завершён")
     # --- Сбор низ после крестика ---
     for var in range(1260, 1825, STEP_BOTTOM_AFTER):
@@ -461,15 +461,15 @@ def collect_rows_only():
     for var in range(150, 1145, STEP_BOTTOM_BEFORE):
         if stop_script: return
         for offset in range(0, 7, 2):
-            lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 9)
-        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
+            lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 40)  # увеличена задержка
+        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 40)  # увеличена задержка
     log("[collect_rows_only] Сбор низ до крестика завершён")
     # --- Сбор низ после крестика ---
     for var in range(1260, 1825, STEP_BOTTOM_AFTER):
         if stop_script: return
         for offset in range(0, 7, 2):
-            lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 9)
-        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)
+            lclick(var + offset + rnd(-2, 1), 155 + rnd(-1, 1), 40)  # увеличена задержка
+        lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 40)  # увеличена задержка
     log("[collect_rows_only] Сбор низ после крестика завершён")
     # --- Сбор верх ---
     for var in range(480, 1410, STEP_TOP):
