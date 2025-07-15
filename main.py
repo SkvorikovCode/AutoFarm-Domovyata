@@ -421,6 +421,8 @@ def main_loop():
             break
         update_tray_status('yellow')
         log('Пауза 30 секунд перед следующим циклом...')
+        # --- Чистим мусор по шаблону bad_lutic.png ---
+        screenshot_and_click_template(templates_dir="templates", threshold=0.85)
         for i in range(30, 0, -1):
             if stop_script:
                 break
@@ -486,6 +488,8 @@ def collect_rows_loop():
             break
         update_tray_status('yellow')
         log('Пауза 30 секунд перед следующим циклом...')
+        # --- Чистим мусор по шаблону bad_lutic.png ---
+        screenshot_and_click_template(templates_dir="templates", threshold=0.85)
         for i in range(30, 0, -1):
             if stop_script:
                 break
