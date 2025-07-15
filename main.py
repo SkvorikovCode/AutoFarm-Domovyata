@@ -637,6 +637,7 @@ def screenshot_and_click_template(templates_dir="templates", threshold=0.85, tem
             continue
         res = cv2.matchTemplate(screen_gray, template, cv2.TM_CCOEFF_NORMED)
         min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+        print(f"Пробую {template_path}: max_val={max_val}")
         if max_val >= threshold:
             h, w = template.shape
             center_x = max_loc[0] + w // 2
