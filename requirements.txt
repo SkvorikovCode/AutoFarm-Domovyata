@@ -7,3 +7,4 @@ win10toast
 colorama
 opencv-python
 numpy 
+requests 
