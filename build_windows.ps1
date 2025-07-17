@@ -121,14 +121,18 @@ if (-not $?) {
     exit 1
 }
 
-# --- Сборка update.exe ---
-Write-Host "Сборка update.exe..." -ForegroundColor Green
-pyinstaller --onefile --icon=mouse.ico update.py -n update.exe
-
-if (-not $?) {
-    Write-Host "Ошибка при сборке update.exe! Проверьте вывод выше." -ForegroundColor Red
-    exit 1
-}
+# --- Сборка update.exe временно отключена ---
+# Write-Host "Сборка update.exe..." -ForegroundColor Green
+# pyinstaller --onefile --icon=mouse.ico update.py -n update.exe
+# 
+# if (-not $?) {
+#     Write-Host "Ошибка при сборке update.exe! Проверьте вывод выше." -ForegroundColor Red
+#     exit 1
+# }
+#
+# if (Test-Path -Path "dist\update.exe") {
+#     Write-Host "- dist\update.exe - обновлятор" -ForegroundColor White
+# }
 
 if (Test-Path -Path "dist\main_console.exe") {
     if (Test-Path -Path "README.md") {

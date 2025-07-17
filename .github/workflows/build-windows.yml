@@ -29,7 +29,7 @@ jobs:
         run: |
           pyinstaller --onefile --console main.py --name main_console.exe
           pip install requests
-          pyinstaller --onefile update.py --name update.exe
+          # pyinstaller --onefile update.py --name update.exe
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -37,7 +37,7 @@ jobs:
           name: build-archive
           path: |
             dist/main_console.exe
-            dist/update.exe
+            # dist/update.exe
 
       - name: Upload to Release
         if: startsWith(github.ref, 'refs/tags/')
@@ -45,7 +45,7 @@ jobs:
         with:
           files: |
             dist/main_console.exe
-            dist/update.exe
+            # dist/update.exe
           generate_release_notes: true
           token: ${{ secrets.PAT_TOKEN }}
           body_path: release.md
