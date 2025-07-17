@@ -443,11 +443,11 @@ def main_loop():
         if stop_script:
             break
         update_tray_status('yellow')
-        log('Пауза 60 секунд перед следующим циклом...')
+        log('Пауза 70 секунд перед следующим циклом...')
         # --- Чистим мусор по шаблонам bad_lutic.png и bad_lutic_up.png ---
         for template_name in ["bad_lutic.png", "bad_lutic_up.png", "close.png", "little-lutic.png", "lutic.png", "lutic2.png", "bad_lutic_little.png"]:
             screenshot_and_click_template(templates_dir="templates", threshold=0.75, template_name=template_name)
-        for i in range(60, 0, -1):
+        for i in range(70, 0, -1):
             if stop_script:
                 break
             log(f'До следующего запуска: {i} сек.')
