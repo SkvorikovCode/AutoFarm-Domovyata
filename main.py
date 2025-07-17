@@ -512,9 +512,9 @@ def collect_rows_loop():
             break
         update_tray_status('yellow')
         log('Пауза 30 секунд перед следующим циклом...')
-        # --- Чистим мусор по шаблонам bad_lutic.png и bad_lutic_up.png ---
-        for template_name in ["bad_lutic.png", "bad_lutic_up.png"]:
-            screenshot_and_click_template(templates_dir="templates", threshold=0.80, template_name=template_name)
+        # --- Чистим мусор по шаблонам bad_lutic.png, bad_lutic_up.png, bad_lutic_little.png ---
+        for template_name in ["bad_lutic.png", "bad_lutic_up.png", "bad_lutic_little.png"]:
+            screenshot_and_click_template(templates_dir="templates", threshold=0.8, template_name=template_name)
         for i in range(30, 0, -1):
             if stop_script:
                 break
