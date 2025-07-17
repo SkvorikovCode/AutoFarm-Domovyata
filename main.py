@@ -385,11 +385,11 @@ def main():
         # --- Дополнительный сбор лютиков по шаблону каждые 10 сек ---
         if time.time() - last_lutic_check > 10:
             for lutic_template in ["lutic.png", "lutic2.png"]:
-                screenshot_and_click_template(templates_dir="templates", threshold=0.85, template_name=lutic_template)
+                screenshot_and_click_template(templates_dir="templates", threshold=0.80, template_name=lutic_template)
             last_lutic_check = time.time()
         # --- Поиск и клик по крестику через шаблон каждые 5 сек ---
         if time.time() - last_close_check > 5:
-            screenshot_and_click_template(templates_dir="templates", threshold=0.85, template_name="close.png")
+            screenshot_and_click_template(templates_dir="templates", threshold=0.80, template_name="close.png")
             last_close_check = time.time()
     log("[main] Сбор низ завершён")
     wait(10)  # Пауза между сбором низа и сбором верха
@@ -403,12 +403,12 @@ def main():
         # lclick(1265 + rnd(-3, 3), 160 + rnd(-3, 3), 7)  # УБРАНО: клик по крестику
         # --- Дополнительный сбор лютиков по шаблону каждые 10 сек ---
         if time.time() - last_lutic_check > 10:
-            for lutic_template in ["lutic.png", "lutic2.png"]:
-                screenshot_and_click_template(templates_dir="templates", threshold=0.85, template_name=lutic_template)
+            for lutic_template in ["lutic.png", "lutic2.png", "little-lituc.png"]:
+                screenshot_and_click_template(templates_dir="templates", threshold=0.80, template_name=lutic_template)
             last_lutic_check = time.time()
         # --- Поиск и клик по крестику через шаблон каждые 5 сек ---
         if time.time() - last_close_check > 5:
-            screenshot_and_click_template(templates_dir="templates", threshold=0.85, template_name="close.png")
+            screenshot_and_click_template(templates_dir="templates", threshold=0.80, template_name="close.png")
             last_close_check = time.time()
     log("[main] Сбор верх завершён")
     wait(random.uniform(-1.2, 1.2))
@@ -445,8 +445,8 @@ def main_loop():
         update_tray_status('yellow')
         log('Пауза 60 секунд перед следующим циклом...')
         # --- Чистим мусор по шаблонам bad_lutic.png и bad_lutic_up.png ---
-        for template_name in ["bad_lutic.png", "bad_lutic_up.png", "close.png", "little-lutic.png", "lutic.png", "lutic2.png"]:
-            screenshot_and_click_template(templates_dir="templates", threshold=0.85, template_name=template_name)
+        for template_name in ["bad_lutic.png", "bad_lutic_up.png", "close.png", "little-lutic.png", "lutic.png", "lutic2.png", "bad_lutic_little.png"]:
+            screenshot_and_click_template(templates_dir="templates", threshold=0.75, template_name=template_name)
         for i in range(60, 0, -1):
             if stop_script:
                 break
@@ -514,7 +514,7 @@ def collect_rows_loop():
         log('Пауза 30 секунд перед следующим циклом...')
         # --- Чистим мусор по шаблонам bad_lutic.png и bad_lutic_up.png ---
         for template_name in ["bad_lutic.png", "bad_lutic_up.png"]:
-            screenshot_and_click_template(templates_dir="templates", threshold=0.85, template_name=template_name)
+            screenshot_and_click_template(templates_dir="templates", threshold=0.80, template_name=template_name)
         for i in range(30, 0, -1):
             if stop_script:
                 break
@@ -614,7 +614,7 @@ def print_info():
 
 # run_updater()  # <--- Временно отключено для отладки на MacOS
 
-def screenshot_and_click_template(templates_dir="templates", threshold=0.85, template_name=None):
+def screenshot_and_click_template(templates_dir="templates", threshold=0.80, template_name=None):
     """
     Делает скриншот экрана, ищет шаблон(ы) из templates_dir.
     Если указан template_name — ищет только этот шаблон.
