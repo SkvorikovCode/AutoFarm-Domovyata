@@ -309,7 +309,15 @@ def on_press(key):
         stop_script = False
         script_running = True
         update_tray_status('green')
-        script_thread = threading.Thread(target=collect_rows_loop)
+        # Выполняем только один проход сбора и сразу останавливаемся
+        def run_collect_once():
+            try:
+                collect_rows_only()
+            finally:
+                global script_running
+                script_running = False
+                update_tray_status('red')
+        script_thread = threading.Thread(target=run_collect_once)
         script_thread.start()
     elif (vk_code == 100 or name == 'num4') and not script_running:
         # Удаляем запуск очистки кеша и сухостоя по Numpad 4
@@ -367,7 +375,7 @@ def main():
         lclick(var + rnd(-2, 0), 132 + rnd(-3, 1), 36)
     lclick(1850, 350)
     log("[main] Посадка верх завершена")
-    wait(10)  # Пауза перед сбором низа
+    wait(13)  # Пауза перед сбором низа
     # --- Сбор низ (единый проход, включая крестик) ---
     last_lutic_check = time.time()
     last_close_check = time.time()
@@ -392,7 +400,7 @@ def main():
             screenshot_and_click_template(templates_dir="templates", threshold=0.80, template_name="close.png")
             last_close_check = time.time()
     log("[main] Сбор низ завершён")
-    wait(10)  # Пауза между сбором низа и сбором верха
+    wait(15)  # Пауза между сбором низа и сбором верха
     # --- Сбор верх ---
     last_lutic_check = time.time()
     last_close_check = time.time()
