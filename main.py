@@ -392,7 +392,7 @@ def main():
         var += step - STEP_BOTTOM  # увеличиваем var дополнительно, если шаг увеличен
         # --- Дополнительный сбор лютиков по шаблону каждые 10 сек ---
         if time.time() - last_lutic_check > 10:
-            for lutic_template in ["lutic.png", "lutic2.png"]:
+            for lutic_template in ["lutic.png", "lutic2.png", "little-lutic.png"]:
                 screenshot_and_click_template(templates_dir="templates", threshold=0.80, template_name=lutic_template)
             last_lutic_check = time.time()
         # --- Поиск и клик по крестику через шаблон каждые 5 сек ---
@@ -453,7 +453,7 @@ def main_loop():
         update_tray_status('yellow')
         log('Пауза 70 секунд перед следующим циклом...')
         # --- Чистим мусор по шаблонам bad_lutic.png и bad_lutic_up.png ---
-        for template_name in ["bad_lutic.png", "bad_lutic_up.png", "close.png", "little-lutic.png", "lutic.png", "lutic2.png", "bad_lutic_little.png"]:
+        for template_name in ["bad_lutic.png", "bad_lutic_up.png", "close.png", "little-lutic.png", "lutic.png", "lutic2.png", "bad_lutic_little.png", "bad_lutic_little_2.png"]:
             screenshot_and_click_template(templates_dir="templates", threshold=0.75, template_name=template_name)
         for i in range(70, 0, -1):
             if stop_script:
