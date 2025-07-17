@@ -392,7 +392,7 @@ def main():
             screenshot_and_click_template(templates_dir="templates", threshold=0.85, template_name="close.png")
             last_close_check = time.time()
     log("[main] Сбор низ завершён")
-    wait(5)  # Пауза между сбором низа и сбором верха
+    wait(10)  # Пауза между сбором низа и сбором верха
     # --- Сбор верх ---
     last_lutic_check = time.time()
     last_close_check = time.time()
