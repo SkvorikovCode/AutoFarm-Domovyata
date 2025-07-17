@@ -357,7 +357,7 @@ def main():
     lclick(1850, 350)
     wait(3.2)
     log("[main] Посадка низ завершена")
-    wait(20)
+    wait(40)  # Увеличено: пауза перед посадкой верха
     # --- Посадка верх ---
     ldown(580, 132)
     wait(0.4)
@@ -400,7 +400,7 @@ def main():
             screenshot_and_click_template(templates_dir="templates", threshold=0.80, template_name="close.png")
             last_close_check = time.time()
     log("[main] Сбор низ завершён")
-    wait(25)  # Пауза между сбором низа и сбором верха
+    wait(50)  # Увеличено: пауза между сбором низа и сбором верха
     # --- Сбор верх ---
     last_lutic_check = time.time()
     last_close_check = time.time()
