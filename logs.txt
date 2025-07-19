@@ -1,0 +1,200 @@
+Нажата клавиша: <97>, vk: 97, char: None, name: None
+Скрипт запущен (Numpad 1)
+===> Новый цикл main()
+Текущий цикл: 1
+===> Начало main()
+ОШИБКА В main(): PyAutoGUI fail-safe triggered from mouse moving to a corner of the screen. To disable this fail-safe, set pyautogui.FAILSAFE to False. DISABLING FAIL-SAFE IS NOT RECOMMENDED.
+<=== main() завершён, пауза перед следующим циклом
+Пауза 70 секунд перед следующим циклом...
+Пользователь переместил мышь, возвращаем на (745, 405)
+Скорость загрузки: 95.02 Мбит/с, отдачи: 110.53 Мбит/с, пинг: 5.24 мс
+Для запуска нажмите Numpad 1, для остановки — Numpad 2, для запуска только сбора — Numpad 3, для очистки кеша и сухостоя — Numpad 4.
+Нажата клавиша: Key.ctrl_l, vk: None, char: None, name: ctrl_l
+Нажата клавиша: '\x03', vk: 67, char: , name: None
+Нажата клавиша: Key.alt_l, vk: None, char: None, name: alt_l
+Нажата клавиша: Key.tab, vk: None, char: None, name: tab
+Нажата клавиша: <101>, vk: 101, char: None, name: None
+Запущено прожимание горшков (Numpad 5)
+===> Начало click_pots_only() (только прожимание горшков)
+Прожимание горшков на нижней грядке
+Нажата клавиша: <101>, vk: 101, char: None, name: None
+Нажата клавиша: Key.esc, vk: None, char: None, name: esc
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Скрипт остановлен (Numpad 2)
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Пользователь переместил мышь, возвращаем на (393, 276)
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Скорость загрузки: 100.49 Мбит/с, отдачи: 110.56 Мбит/с, пинг: 4.62 мс
+Для запуска нажмите Numpad 1, для остановки — Numpad 2, для запуска только сбора — Numpad 3, для очистки кеша и сухостоя — Numpad 4, для прожимания горшков — Numpad 5.
+Нажата клавиша: <101>, vk: 101, char: None, name: None
+Запущено прожимание горшков (Numpad 5)
+===> Начало click_pots_only() (только прожимание горшков)
+Прожимание горшков на нижней грядке
+Прожимание горшков на нижней грядке завершено
+Прожимание горшков на верхней грядке
+Прожимание горшков на верхней грядке завершено
+<=== Конец click_pots_only() (только прожимание горшков)
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Выход по меню трея
+Нажата клавиша: <99>, vk: 99, char: None, name: None
+Скрипт запущен только сбор (Numpad 3)
+===> Начало collect_rows_only() (только сбор)
+Скорость загрузки: 96.44 Мбит/с, отдачи: 111.82 Мбит/с, пинг: 4.91 мс
+Для запуска нажмите Numpad 1, для остановки — Numpad 2, для запуска только сбора — Numpad 3, для очистки кеша и сухостоя — Numpad 4, для прожимания горшков — Numpad 5.
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Скрипт остановлен (Numpad 2)
+Нажата клавиша: <99>, vk: 99, char: None, name: None
+Скрипт запущен только сбор (Numpad 3)
+===> Начало collect_rows_only() (только сбор)
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Скрипт остановлен (Numpad 2)
+Нажата клавиша: Key.esc, vk: None, char: None, name: esc
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <101>, vk: 101, char: None, name: None
+Запущено прожимание горшков (Numpad 5)
+===> Начало click_pots_only() (только прожимание горшков)
+Прожимание горшков на нижней грядке
+Нажата клавиша: <101>, vk: 101, char: None, name: None
+Нажата клавиша: <101>, vk: 101, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Скрипт остановлен (Numpad 2)
+Нажата клавиша: <99>, vk: 99, char: None, name: None
+Скрипт запущен только сбор (Numpad 3)
+===> Начало collect_rows_only() (только сбор)
+[collect_rows_only] Сбор низ завершён
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Скрипт остановлен (Numpad 2)
+Нажата клавиша: <99>, vk: 99, char: None, name: None
+Скрипт запущен только сбор (Numpad 3)
+===> Начало collect_rows_only() (только сбор)
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Скрипт остановлен (Numpad 2)
+Нажата клавиша: <99>, vk: 99, char: None, name: None
+Скрипт запущен только сбор (Numpad 3)
+===> Начало collect_rows_only() (только сбор)
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Скрипт остановлен (Numpad 2)
+Нажата клавиша: <97>, vk: 97, char: None, name: None
+Скрипт запущен (Numpad 1)
+===> Новый цикл main()
+Текущий цикл: 1
+===> Начало main()
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Скрипт остановлен (Numpad 2)
+<=== main() завершён, пауза перед следующим циклом
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: Key.ctrl_l, vk: None, char: None, name: ctrl_l
+Нажата клавиша: '\x03', vk: 67, char: , name: None
+Нажата клавиша: <99>, vk: 99, char: None, name: None
+Скрипт запущен только сбор (Numpad 3)
+===> Начало collect_rows_only() (только сбор)
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Скрипт остановлен (Numpad 2)
+Скорость загрузки: 95.88 Мбит/с, отдачи: 110.65 Мбит/с, пинг: 4.60 мс
+Для запуска нажмите Numpad 1, для остановки — Numpad 2, для запуска только сбора — Numpad 3, для очистки кеша и сухостоя — Numpad 4, для прожимания горшков — Numpad 5.
+Скорость загрузки: 96.93 Мбит/с, отдачи: 112.07 Мбит/с, пинг: 4.75 мс
+Для запуска нажмите Numpad 1, для остановки — Numpad 2, для запуска только сбора — Numpad 3, для очистки кеша и сухостоя — Numpad 4.
+Нажата клавиша: <99>, vk: 99, char: None, name: None
+Скрипт запущен только сбор (Numpad 3)
+===> Начало collect_rows_only() (только сбор)
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Скрипт остановлен (Numpad 2)
+Нажата клавиша: <99>, vk: 99, char: None, name: None
+Скрипт запущен только сбор (Numpad 3)
+===> Начало collect_rows_only() (только сбор)
+Пользователь переместил мышь, возвращаем на (1264, 160)
+Нажата клавиша: <96>, vk: 96, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Скрипт остановлен (Numpad 2)
+Нажата клавиша: <97>, vk: 97, char: None, name: None
+Скрипт запущен (Numpad 1)
+===> Новый цикл main()
+Текущий цикл: 1
+===> Начало main()
+[main] Посадка низ завершена
+[main] Посадка верх завершена
+[main] Сбор низ завершён
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Скрипт остановлен (Numpad 2)
+<=== main() завершён, пауза перед следующим циклом
+Нажата клавиша: <97>, vk: 97, char: None, name: None
+Скрипт запущен (Numpad 1)
+===> Новый цикл main()
+Текущий цикл: 2
+===> Начало main()
+[main] Посадка низ завершена
+[main] Посадка верх завершена
+[main] Сбор низ завершён
+[main] Сбор верх завершён
+<=== Конец main()
+<=== main() завершён, пауза перед следующим циклом
+Пауза 70 секунд перед следующим циклом...
+До следующего запуска: 70 сек.
+До следующего запуска: 69 сек.
+До следующего запуска: 68 сек.
+До следующего запуска: 67 сек.
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Скрипт остановлен (Numpad 2)
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <101>, vk: 101, char: None, name: None
+Нажата клавиша: <97>, vk: 97, char: None, name: None
+Скрипт запущен (Numpad 1)
+===> Новый цикл main()
+Текущий цикл: 3
+===> Начало main()
+Нажата клавиша: <97>, vk: 97, char: None, name: None
+Нажата клавиша: <97>, vk: 97, char: None, name: None
+[main] Посадка низ завершена
+[main] Посадка верх завершена
+[main] Сбор низ завершён
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Скрипт остановлен (Numpad 2)
+<=== main() завершён, пауза перед следующим циклом
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: <99>, vk: 99, char: None, name: None
+Скрипт запущен только сбор (Numpad 3)
+===> Начало collect_rows_only() (только сбор)
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Скрипт остановлен (Numpad 2)
+Нажата клавиша: <99>, vk: 99, char: None, name: None
+Скрипт запущен только сбор (Numpad 3)
+===> Начало collect_rows_only() (только сбор)
+[collect_rows_only] Сбор низ завершён
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Скрипт остановлен (Numpad 2)
+Нажата клавиша: <98>, vk: 98, char: None, name: None
+Нажата клавиша: Key.ctrl_l, vk: None, char: None, name: ctrl_l
+Нажата клавиша: '\x03', vk: 67, char: , name: None
